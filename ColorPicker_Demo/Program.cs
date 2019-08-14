@@ -13,7 +13,7 @@ namespace ColorPicker_Demo
         {
             Console.Title = "R2.0 SSSorter";
             try 
-            { 
+            {
 
                 Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
                 string input = Console.ReadLine().ToLower();
@@ -22,10 +22,7 @@ namespace ColorPicker_Demo
                     Picture pic = new Picture();
                     Console.WriteLine("Width: " + pic.picBitMap.Width + "    Height: " + pic.picBitMap.Height);
                     Console.WriteLine(string.Join("\n", pic.sorter.GetAllColors()));
-
-                    //Console.WriteLine(pic.sorter.availableItems.Aggregate((next,biggest) => next.Value > biggest.Value ? next : biggest).Key); 
                     Messenger.SendToArm(pic.sorter.availableItems.Aggregate((next, biggest) => next.Value > biggest.Value ? next : biggest).Key);
-                    System.Threading.Thread.Sleep(3000);
                     Console.WriteLine("Sending data to arm...");
                 }
                 Console.WriteLine("Done");

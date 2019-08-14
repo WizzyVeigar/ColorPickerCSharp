@@ -48,6 +48,11 @@ namespace ColorPicker_Demo
                         Color red = new Color("Red");
                         colorList.Add(red.Name);
                     }
+                    else if(hue < 50 && lgt < 0.4)
+                    {
+                        Color brown = new Color("Brown");
+                        colorList.Add(brown.Name);
+                    }
                     else if (hue < 50)
                     {
                         Color orange = new Color("Orange");

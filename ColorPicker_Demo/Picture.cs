@@ -41,8 +41,8 @@ namespace ColorPicker_Demo
             engine.ExecuteFile(@"C:\HelloWorld.py");
 
             // Path to image that python created
-            //string path = @"/home/pi/images/newimage.jpg";
-            string path = @"c:\Orange.png";
+            string path = @"/home/pi/images/newimage.jpg";
+            //string path = @"c:\Orange2.png";
             Bitmap bigBoiImage = null;
 
 
