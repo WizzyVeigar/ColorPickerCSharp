@@ -11,7 +11,7 @@ namespace ColorPicker_Demo
     {
         public static void SendToArm(string theCOLOR)
         {
-            SerialPort seriPort = new SerialPort();
+            SerialPort seriPort = new SerialPort("COM3");
 
             if (!seriPort.IsOpen == true)
             {
