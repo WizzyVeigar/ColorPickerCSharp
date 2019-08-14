@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO.Ports;
 
 namespace ColorPicker_Demo
 {
@@ -10,14 +11,47 @@ namespace ColorPicker_Demo
     {
         public static void SendToArm(string theCOLOR)
         {
-            switch (theCOLOR)
-            {
-                case "White":
+            SerialPort seriPort = new SerialPort();
 
-                    break;
+            if (!seriPort.IsOpen == true)
+            {
+                string toRobo;
+                switch (theCOLOR)
+                {
+                    case "Red":
+                        toRobo = "a";
+                        seriPort.Open();
+                        seriPort.Write(toRobo);
+                        seriPort.Close();
+                        break;
+                    case "Orange":
+                        toRobo = "b";
+                        seriPort.Open();
+                        seriPort.Write(toRobo);
+                        seriPort.Close();
+                        break;
+                    case "Yellow":
+                        toRobo = "c";
+                        seriPort.Open();
+                        seriPort.Write(toRobo);
+                        seriPort.Close();
+                        break;
+                    case "Green":
+                        toRobo = "d";
+                        seriPort.Open();
+                        seriPort.Write(toRobo);
+                        seriPort.Close();
+                        break;
+                    case "Blue":
+                        toRobo = "e";
+                        seriPort.Open();
+                        seriPort.Write(toRobo);
+                        seriPort.Close();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
-
-
     }
 }
