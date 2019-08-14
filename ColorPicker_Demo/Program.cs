@@ -11,6 +11,7 @@ namespace ColorPicker_Demo
 
         static void Main(string[] args)
         {
+            Console.Title = "R2.0 SSSorter";
             try 
             { 
 
@@ -23,7 +24,9 @@ namespace ColorPicker_Demo
                     Console.WriteLine(string.Join("\n", pic.sorter.GetAllColors()));
 
                     //Console.WriteLine(pic.sorter.availableItems.Aggregate((next,biggest) => next.Value > biggest.Value ? next : biggest).Key); 
-                    Messenger.SendT½oArm(pic.sorter.availableItems.Aggregate((next, biggest) => next.Value > biggest.Value ? next : biggest).Key);
+                    Messenger.SendToArm(pic.sorter.availableItems.Aggregate((next, biggest) => next.Value > biggest.Value ? next : biggest).Key);
+                    System.Threading.Thread.Sleep(3000);
+                    Console.WriteLine("Sending data to arm...");
                 }
                 Console.WriteLine("Done");
             }
