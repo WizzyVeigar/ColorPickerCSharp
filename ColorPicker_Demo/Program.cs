@@ -22,6 +22,8 @@ namespace ColorPicker_Demo
                     Console.WriteLine("Width: " + pic.picBitMap.Width + "    Height: " + pic.picBitMap.Height);
                     Console.WriteLine(string.Join("\n", pic.sorter.GetAllColors()));
 
+                    //Console.WriteLine(pic.sorter.availableItems.Aggregate((next,biggest) => next.Value > biggest.Value ? next : biggest).Key); 
+                    Messenger.SendT½oArm(pic.sorter.availableItems.Aggregate((next, biggest) => next.Value > biggest.Value ? next : biggest).Key);
                 }
                 Console.WriteLine("Done");
             }

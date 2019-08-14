@@ -9,8 +9,8 @@ namespace ColorPicker_Demo
 {
     public class Sorter
     {
-        public List<string> colorList = new List<string>(); 
-
+        public List<string> colorList = new List<string>();
+        public Dictionary<string, int> availableItems = new Dictionary<string, int>();
 
         //List for colors in the image
         // Loop through the images pixels to get color.
@@ -88,7 +88,7 @@ namespace ColorPicker_Demo
         /// <returns>Returns Dictionary availbleitems</returns>
         public Dictionary<string, int> GetAllColors()
         {
-            Dictionary<string, int> availableItems = new Dictionary<string, int>();
+
             foreach (string color in colorList)
             {
                 bool itemExists = false;

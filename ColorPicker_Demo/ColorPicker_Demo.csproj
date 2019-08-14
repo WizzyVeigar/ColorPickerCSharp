@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Color.cs" />
     <Compile Include="ColorsSC.cs" />
+    <Compile Include="Messenger.cs" />
     <Compile Include="Picture.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
