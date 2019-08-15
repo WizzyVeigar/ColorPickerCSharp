@@ -11,6 +11,7 @@ namespace ColorPicker_Demo
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Version 0.4");
             Console.Title = "R2.0 SSSorter";
             try 
             {
