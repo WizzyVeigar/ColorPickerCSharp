@@ -21,7 +21,7 @@ namespace ColorPicker_Demo
                 for (int y = 0; y < bitMapPic.Height; y++)
                 {
                     System.Drawing.Color pixelColor = bitMapPic.GetPixel(x, y);
-
+                    
                     float hue = pixelColor.GetHue();
                     float sat = pixelColor.GetSaturation();
                     float lgt = pixelColor.GetBrightness();
@@ -30,61 +30,79 @@ namespace ColorPicker_Demo
                     {
                         Color black = new Color("Black");
                         colorList.Add(black.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Black);
                     }
                     else if (lgt > 0.8)
                     {
                         Color white = new Color("White");
                         colorList.Add(white.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.White);
                     }
 
                     else if (sat < 0.25)
                     {
-                        Color grey = new Color("Grey");
-                        colorList.Add(grey.Name);
+                        Color gray = new Color("Gray");
+                        colorList.Add(gray.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Gray);
                     }
 
                     else if (hue < 20)
                     {
                         Color red = new Color("Red");
                         colorList.Add(red.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Red);
                     }
-                    else if(hue < 50 && lgt < 0.4)
+                    else if(hue < 50 && lgt < 0.3)
                     {
                         Color brown = new Color("Brown");
                         colorList.Add(brown.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Brown);
                     }
                     else if (hue < 50)
                     {
                         Color orange = new Color("Orange");
                         colorList.Add(orange.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Orange);
                     }
                     else if (hue < 90)
                     {
                         Color yellow = new Color("Yellow");
                         colorList.Add(yellow.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Yellow);
                     }
                     else if (hue < 150)
                     {
                         Color green = new Color("Green");
                         colorList.Add(green.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Green);
                     }
                     else if (hue < 210)
                     {
                         Color cyan = new Color("Cyan");
                         colorList.Add(cyan.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Cyan);
                     }
                     else if (hue < 270)
                     {
                         Color blue = new Color("Blue");
                         colorList.Add(blue.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Blue);
                     }
                     else if (hue < 330)
                     {
                         Color magenta = new Color("Magenta");
                         colorList.Add(magenta.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Magenta);
+                    }
+                    else
+                    {
+                        Color ErrorColor = new Color("ErrorColor");
+                        colorList.Add(ErrorColor.Name);
+                        bitMapPic.SetPixel(x, y, System.Drawing.Color.Empty);
                     }
                 }
             }
+            bitMapPic.Save(@"/home/pi/Desktop/BitmapImage.png", System.Drawing.Imaging.ImageFormat.Png);
         }
         /// <summary>
         /// 
@@ -114,6 +132,8 @@ namespace ColorPicker_Demo
                     availableItems.Add(color, 1);
                 }
             }
+
+            //TODO find the highest amount of color and send it to the messenger class
             return availableItems;
         }
         //public override string ToString()

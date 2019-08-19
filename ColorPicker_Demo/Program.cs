@@ -9,13 +9,40 @@ namespace ColorPicker_Demo
     class Program
     {
 
+        //                            |.
+        //                           ::.
+        //                           :::
+        //          ___              |::
+        //         `-._''--.._       |::
+        //             `-._   `-._.|::
+        //                `-._    `-::::
+        //                   `.     |:::.
+        //                     )    |::`:"-._ 
+        //                   <'   _.7  ::::::`-,.._
+        //                    `-.:        `` '::::::".
+        //                    .:'       .    .   `::::\
+        //                  .:'        .           .:::}
+        //               _.:'    __          .     :::/
+        // ,-.___,,..--'' --.""``  ``"".-- --,.._____.-.
+        //((___ """   -- ...     ....   __  ______  (D
+        // "-'`   ```''-.  __,,.......,,__      ::.  `-"
+        //               `<-....,,,,....-<   .:::'
+        //                 "._       ___,,._:::(
+        //                    ::--=''       `\:::.
+        //                   / :::'           `\::.
+        //        pils      / ::'               `\::
+        //                 / :'                   `\:
+        //                ( /                       `"
+        //                 "
         static void Main(string[] args)
         {
-            Console.WriteLine("Version 0.4");
+            Console.WriteLine("Version 2 + 4 is 7 with bitmap, quick mafs Definite version 2");
             Console.Title = "R2.0 SSSorter";
-            try 
+            try
             {
-
+                Console.WriteLine("Please wait a moment...");
+                Messenger.RestartArm();
+                Console.Clear();
                 Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
                 string input = Console.ReadLine().ToLower();
                 if (input == "start" || input == "sort" || input == "s")
