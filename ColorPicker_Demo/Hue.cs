@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ColorPicker_Demo
 {
-    public class Color : ColorsSC
+    public class Hue : ColorsSC
     {
-        public Color(string name) : base(name)
+        public Hue(string name) : base(name)
         {
         }
         

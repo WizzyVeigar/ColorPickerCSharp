@@ -9,13 +9,25 @@ namespace ColorPicker_Demo
 {
     static class Messenger
     {
+        static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
+        static string toRobo;
+
+        public static void RestartArm()
+        {
+            if (!seriPort.IsOpen == true)
+            {
+                seriPort.Open();
+                toRobo = "r";
+                seriPort.Write(toRobo);
+                seriPort.Close();
+            }
+        }
+
         public static void SendToArm(string theCOLOR)
         {
-            SerialPort seriPort = new SerialPort("COM3");
 
             if (!seriPort.IsOpen == true)
             {
-                string toRobo;
                 switch (theCOLOR)
                 {
                     case "Red":
