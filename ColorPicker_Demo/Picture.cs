@@ -17,7 +17,7 @@ using System.Threading;
 //      `\_   ===    \.  |
 //      / /\_   \ /      |
 //      |/   \_  \|      /
-//             \________/snd
+//             \________/
 
 namespace ColorPicker_Demo
 {
@@ -44,7 +44,7 @@ namespace ColorPicker_Demo
         public Picture()
         {
             picBitMap = new Bitmap(TakePicture());
-            sorter.Classify(picBitMap);
+            //sorter.Classify(picBitMap);
         }
 
         public Bitmap TakePicture() //Takes the actual picture
@@ -64,7 +64,7 @@ namespace ColorPicker_Demo
                 start.UseShellExecute = false;
                 start.RedirectStandardOutput = false;
 
-                Console.WriteLine("Starting Proccess");
+                Console.WriteLine("Starting Process");
                 Process process = Process.Start(start);
             }
             catch (Exception e)
@@ -133,7 +133,6 @@ namespace ColorPicker_Demo
 
             // Path to image that python created
             string path = @"/home/pi/images/newImage.png";
-            //string path = @"c:\Orange2.png";
             Bitmap bigBoiImage = null;
 
 
@@ -166,7 +165,7 @@ namespace ColorPicker_Demo
                     Console.WriteLine("Found Image");
                     foundImage = true;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Thread.Sleep(3000);
                 }

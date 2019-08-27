@@ -17,7 +17,7 @@ namespace ColorPicker_Demo
             if (!seriPort.IsOpen == true)
             {
                 seriPort.Open();
-                toRobo = "s";
+                toRobo = "r";
                 seriPort.Write(toRobo);
                 seriPort.Close();
             }
