@@ -31,33 +31,33 @@ namespace ColorPicker_Demo
                 switch (theCOLOR)
                 {
                     case "Red":
-                        toRobo = "a";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("a");
                         seriPort.Close();
                         break;
                     case "Orange":
-                        toRobo = "b";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("b");
                         seriPort.Close();
                         break;
                     case "Yellow":
-                        toRobo = "c";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("c");
                         seriPort.Close();
                         break;
                     case "Green":
-                        toRobo = "d";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("d");
                         seriPort.Close();
                         break;
                     case "Blue":
-                        toRobo = "e";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("e");
+                        seriPort.Close();
+                        break;
+                    case "Brown":
+                        seriPort.Open();
+                        seriPort.Write("f");
                         seriPort.Close();
                         break;
                     default:
