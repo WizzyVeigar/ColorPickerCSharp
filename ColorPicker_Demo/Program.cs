@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using ColorDifferentiater;
 using System.Threading.Tasks;
 
 
@@ -43,6 +44,23 @@ namespace ColorPicker_Demo
         //                 "
         static void Main(string[] args)
         {
+            ColorDifferantier differantier = new ColorDifferantier();
+            ColorRange brown = new ColorRange(new CColor(50, 1, 1), new CColor(130, 60, 50), "Brown");
+            ColorRange red = new ColorRange(new CColor(51, 0, 0), new CColor(255, 40, 75), "red");
+            ColorRange orange = new ColorRange(new CColor(150, 63, 0), new CColor(255, 175, 35), "orange");
+            ColorRange yellow = new ColorRange(new CColor(208, 208, 0), new CColor(255, 255, 230), "yellow");
+            ColorRange green = new ColorRange(new CColor(0, 1, 0), new CColor(210, 255, 210), "green");
+            ColorRange blue = new ColorRange(new CColor(50, 0, 0), new CColor(130, 60, 50), "blue");
+            differantier.AddColorRange(brown);
+            differantier.AddColorRange(red);
+            differantier.AddColorRange(orange);
+            differantier.AddColorRange(yellow);
+            differantier.AddColorRange(green);
+            differantier.AddColorRange(blue);
+            
+            Console.WriteLine(differantier.GetColorName(new CColor(52, 10, 10)));
+
+
             string inputArg = "..\\..\\Sample\\";
             const int k = 3;
             //Looks for the sample folder in all directories 
@@ -50,31 +68,42 @@ namespace ColorPicker_Demo
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine("Please wait a moment...");
             //Messenger.RestartArm();
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
             string input = Console.ReadLine().ToLower();
             if (input == "start" || input == "sort" || input == "s")
             {
-                Picture pic = new Picture();
-                if (Directory.Exists(inputArg) == true)
+                Console.WriteLine("What OS are you running?... (W) & (R)");
+                input = Console.ReadLine().ToLower();
+                if (input == "r")
                 {
-                    foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
-                    {
-                        GetDominantColour(file, k, pic.picBitMap);
-                    }
-                    return;
+                    Picture pic = new Picture();
+                    GetDominantColour(@"/home/pi/images/newImage.png", k);
                 }
-                //Checks if the sample image is in the same directory as the program
-                if (File.Exists(inputArg) == true)
+
+                if (input == "w")
                 {
-                    GetDominantColour(inputArg, k, pic.picBitMap);
+                    if (Directory.Exists(inputArg) == true)
+                    {
+                        foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
+                        {
+                            GetDominantColour(file, k);
+                        }
+                        return;
+                    }
+                    //Checks if the sample image is in the same directory as the program
+                    if (File.Exists(inputArg) == true)
+                    {
+                        GetDominantColour(inputArg, k);
+                    }
+
                 }
             }
 
             Console.WriteLine("Unable to open {0}. Ensure it's a file or directory", inputArg);
         }
 
-        private static void GetDominantColour(string inputFile, int k, Bitmap BitMapPic)
+        private static void GetDominantColour(string inputFile, int k)
         {
             using (Image image = Image.FromFile(inputFile))
             {
@@ -113,14 +142,34 @@ namespace ColorPicker_Demo
                     Console.WriteLine("Dominant colours for {0}:", inputFile);
                     foreach (Color color in dominantColours)
                     {
-                        //Color _color = System.Drawing.ColorTranslator.FromHtml("#" + color.Name);
-                        Color _color = System.Drawing.ColorTranslator.FromHtml("#FF0000");
-                        Console.WriteLine(_color);
-                        //Color a =  Color.FromArgb(_color.A,_color.R, _color.G, _color.B);
-                        Color cooloor = Color.FromArgb(255, 255, 0, 0);
-
                         Console.WriteLine("K: {0} (#{1:x2}{2:x2}{3:x2})", color, color.R, color.G, color.B);
+                        CColor b = new CColor(color.R, color.G, color.G);
                     }
+
+                    //Console.WriteLine(GetBetween(Calling(dominantColours[0].Name.ToUpper())));
+
+                    //  (\_/)
+                    //(= '.' =) 
+                    // (")_(") Find the best color match, through averaging ARGB
+
+                    //KCluster closestCluster = null;
+                    //KCluster dominantColor = new KCluster(dominantColours[0]);
+                    ////Loops through all the colors in KnownColor Enum
+                    //foreach (KnownColor color in Enum.GetValues(typeof(KnownColor)))
+                    //{
+                    //    KCluster KnownCCluster = new KCluster(Color.FromKnownColor(color));
+                    //    double shortestDistance = float.MaxValue;
+                    //    closestCluster = null;
+
+                    //    double distance = dominantColor.DistanceFromCentre(Color.FromKnownColor(color));
+                    //    if (distance < shortestDistance)
+                    //    {
+                    //        shortestDistance = distance;
+                    //        closestCluster = KnownCCluster;
+                    //    }
+                    //}
+                    //Console.WriteLine(closestCluster.Centre.ToString());
+
                     //Make a bar for the most dominant colors beneath the image
                     const int swatchHeight = 20;
                     using (Bitmap bmp = new Bitmap(resizedBitMapImage.Width, resizedBitMapImage.Height + swatchHeight))
@@ -142,84 +191,77 @@ namespace ColorPicker_Demo
                         }
                         string outputFile = string.Format("{0}.output.png", Path.GetFileNameWithoutExtension(inputFile));
                         bmp.Save(outputFile, ImageFormat.Png);
-                        Sorter s = new Sorter();
-                        s.Classify(BitMapPic);
                         Console.ReadLine();
                         //Process.Start("explorer.exe", outputFile); //opens the newly created picture
                         //Messenger.SendToArm(pic.sorter.availableItems.Aggregate((next, biggest) => next.Value > biggest.Value? next : biggest).Key);
+
+                        //Console.WriteLine("Sending this to arm..." + GetBetween(Calling(dominantColours[0].Name.ToUpper())));
+                        //Messenger.SendToArm(GetBetween(Calling(dominantColours[0].Name.ToUpper())));
                     }
                 }
             }
         }
 
-        //public string Calling(string hex)
-        //{
-        //    try
+        //    public static string Calling(string hex)
         //    {
-
-        //        string html = string.Empty;
-        //        hex = "https://www.htmlcsscolor.com/hex/" + hex;
-
-        //        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hex);
-
-        //        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-        //        using (Stream stream = response.GetResponseStream())
-        //        using (StreamReader reader = new StreamReader(stream))
+        //        try
         //        {
-        //            html = reader.ReadToEnd();
+        //            if (hex.Contains("FF"))
+        //                hex = hex.Remove(0, 2);
+        //            string html = string.Empty;
+        //            hex = "https://www.htmlcsscolor.com/hex/" + hex;
+
+        //            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hex);
+
+        //            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+        //            using (Stream stream = response.GetResponseStream())
+        //            using (StreamReader reader = new StreamReader(stream))
+        //            {
+        //                html = reader.ReadToEnd();
+        //            }
+        //            return html;
         //        }
-        //        return html;
+        //        catch (Exception e)
+        //        {
+        //            return e.Message;
+        //        }
         //    }
-        //    catch (Exception e)
-        //    {
-        //        return e.Message;
-        //    }
-        //}
 
-        //public string GetBetween(string strSource, string strStart = "known color: ", string strEnd = ".")
-        //{
-        //    int start, end;
-        //    if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+        //    public static string GetBetween(string strSource, string strStart = "known color: ", string strEnd = ".")
         //    {
-        //        start = strSource.IndexOf(strStart, 0) + strStart.Length;
-        //        end = strSource.IndexOf(strEnd, start);
-        //        //return strSource.Substring(Start, End - Start);
-        //        //double a = ConvertToCelsius(strSource.Substring(start, end - start));
-        //        return strSource.Substring(start, end - start);
+        //        int start, end;
+        //        if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+        //        {
+        //            start = strSource.IndexOf(strStart, 0) + strStart.Length;
+        //            end = strSource.IndexOf(strEnd, start);
+        //            //return strSource.Substring(Start, End - Start);
+        //            //double a = ConvertToCelsius(strSource.Substring(start, end - start));
+        //            return strSource.Substring(start, end - start);
+        //        }
+        //        else
+        //        {
+        //            return GetBetweenUnknowColor(strSource);
+        //        }
         //    }
-        //    else
-        //    {
-        //        return GetBetweenUnknowColor(strSource);
-        //    }
-        //}
 
-        //private string GetBetweenUnknowColor(string strSource, string strStart = "approx ", string strEnd = ".")
-        //{
-        //    int start, end;
-        //    if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+        //    private static string GetBetweenUnknowColor(string strSource, string strStart = "approx ", string strEnd = ".")
         //    {
-        //        start = strSource.IndexOf(strStart, 0) + strStart.Length;
-        //        end = strSource.IndexOf(strEnd, start);
+        //        int start, end;
+        //        if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+        //        {
+        //            start = strSource.IndexOf(strStart, 0) + strStart.Length;
+        //            end = strSource.IndexOf(strEnd, start);
 
-        //        return strSource.Substring(start, end - start);
-        //    }
-        //    else
-        //    {
-        //        return "Not Found";
+        //            return strSource.Substring(start, end - start);
+        //        }
+        //        else
+        //        {
+        //            return "Not Found";
+        //        }
         //    }
         //}
     }
 }
-
-
-
-
-//            Console.WriteLine(string.Join("\n", pic.sorter.GetAllColors()));
-
-//            Console.WriteLine("Sending data to arm...");
-//        }
-//Console.WriteLine("Done");
-
 #region mydumbattempt
 //    try
 //    {

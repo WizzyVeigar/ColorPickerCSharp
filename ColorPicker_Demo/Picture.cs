@@ -53,9 +53,6 @@ namespace ColorPicker_Demo
             {
                 ProcessStartInfo start = new ProcessStartInfo();
                 // File is the the python install folder
-                //start.FileName = @"C:\Users\pete168s\AppData\Local\Programs\Python\Python36\python.exe";
-
-                //start.FileName = @"/usr/share/rasp-ui-overrides/applications/IDLE (using Python-2.7).exe";
                 start.FileName = @"/usr/bin/python3";
 
                 // File where our python script is
@@ -138,27 +135,8 @@ namespace ColorPicker_Demo
 
 
             bool foundImage = false;
-
             while (foundImage == false)
             {
-                //if (File.Exists(path))
-                //{
-                //        Thread.Sleep(30000);
-                //    Console.WriteLine("File found");
-                //    if(bigBoiImage == null)
-                //    {
-                //        Console.WriteLine("big boi image is null");
-                //        bigBoiImage = new Bitmap(path);
-                //    }
-                //    else
-                //    {
-                //        Console.WriteLine("image in not null");
-                //        foundImage = true;
-                //    }
-                //}
-                //Thread.Sleep(1000);
-                //Console.WriteLine("while");
-
                 try
                 {
                     bigBoiImage = new Bitmap(path);
@@ -173,6 +151,12 @@ namespace ColorPicker_Demo
             // Delete image to get ready for the next time
             //File.Delete(path);
             return bigBoiImage;
+        }
+
+        public Bitmap ResizeImage(Bitmap originImage) //TODO: Make it only take the bottom half of the bitmap image.
+        {
+
+            return originImage;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace ColorPicker_Demo
 
         public static void SendToArm(string theCOLOR)
         {
+            
 
             if (!seriPort.IsOpen == true)
             {
