@@ -44,7 +44,6 @@ namespace ColorPicker_Demo
         public Picture()
         {
             picBitMap = new Bitmap(TakePicture());
-            //sorter.Classify(picBitMap);
         }
 
         public Bitmap TakePicture() //Takes the actual picture
@@ -129,7 +128,7 @@ namespace ColorPicker_Demo
             #endregion
 
             // Path to image that python created
-            string path = @"/home/pi/images/newImage.png";
+            Path = @"/home/pi/images/newImage.png";
             Bitmap bigBoiImage = null;
 
 
@@ -139,7 +138,7 @@ namespace ColorPicker_Demo
             {
                 try
                 {
-                    bigBoiImage = new Bitmap(path);
+                    bigBoiImage = new Bitmap(Path);
                     Console.WriteLine("Found Image");
                     foundImage = true;
                 }
@@ -153,10 +152,15 @@ namespace ColorPicker_Demo
             return bigBoiImage;
         }
 
-        public Bitmap ResizeImage(Bitmap originImage) //TODO: Make it only take the bottom half of the bitmap image.
-        {
 
-            return originImage;
+        public Bitmap ResizeImage(Bitmap originImage)       
+        {
+            Rectangle cloneRect = new Rectangle(0, 0, 200, 120);
+            System.Drawing.Imaging.PixelFormat pixelFormat = originImage.PixelFormat;
+            Bitmap cloneBitMap = originImage.Clone(cloneRect, pixelFormat);
+            Console.WriteLine("We made it to goal 2");
+            Console.ReadLine();
+            return cloneBitMap;
         }
     }
 }
