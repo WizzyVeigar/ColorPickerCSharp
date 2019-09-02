@@ -3,27 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Media;
+using ColorDifferentiater;
 
 namespace ColorPicker_Demo
 {
     public class Sorter
     {
-        //changes to    brown som sort:    blue som cyan:     orange som rød:     gul som orange:
-
-
         public List<string> colorList = new List<string>();
-        public Dictionary<string, int> availableItems = new Dictionary<string, int>();
-
-
-
-
+        //public Dictionary<string, int> availableItems = new Dictionary<string, int>();
+                          
         //List for colors in the image
         // Loop through the images pixels to get color.
-        public void Classify(Bitmap bitMapPic)
+        public CColor Classify(Bitmap bitMapPic)
         {
             var colorIncidence = new Dictionary<int, int>();
-            for (var x = 0; x < bitMapPic.Size.Width; x++)
-                for (var y = 0; y < bitMapPic.Size.Height; y++)
+            for (int x = 0; x < bitMapPic.Size.Width; x++)
+                for (int y = 0; y < bitMapPic.Size.Height; y++)
                 {
                     var pixelColor = bitMapPic.GetPixel(x, y).ToArgb();
                     if (colorIncidence.Keys.Contains(pixelColor))
@@ -32,130 +27,92 @@ namespace ColorPicker_Demo
                         colorIncidence.Add(pixelColor, 1);
                 }
 
-            Console.WriteLine(System.Drawing.Color.FromArgb(colorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Key));
-            for (int x = 0; x < bitMapPic.Width; x++)
-            {
-                for (int y = 0; y < bitMapPic.Height; y++)
-                {
-                    System.Drawing.Color pixelColor = bitMapPic.GetPixel(x, y);
 
-                    float hue = pixelColor.GetHue();
-                    float sat = pixelColor.GetSaturation();
-                    float lgt = pixelColor.GetBrightness();
+            // colorIncidence.Keys.ElementAt(0)
+            System.Drawing.Color a = System.Drawing.Color.FromArgb(colorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Key);
+            Console.WriteLine(a.R +" "+ a.G +" "+ a.B);
+            Console.WriteLine(colorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Key);
+            CColor dominant = new CColor(a.R, a.G, a.B); //ThiS IS POTENTIAL BS
+            Console.WriteLine("We made it to goal 3");
+            Console.ReadLine();
+            return dominant;
+            #region BadSorter
+            //for (int x = 0; x < bitMapPic.Width; x++)
+            //{
+            //    for (int y = 0; y < bitMapPic.Height; y++)
+            //    {
+            //        System.Drawing.Color pixelColor = bitMapPic.GetPixel(x, y);
 
-                    if (lgt < 0.2)
-                    {
-                        Hue black = new Hue("Black");
-                        colorList.Add(black.Name);
-                    }
-                    else if (lgt > 0.8)
-                    {
-                        Hue white = new Hue("White");
-                        colorList.Add(white.Name);
-                    }
+            //        float hue = pixelColor.GetHue();
+            //        float sat = pixelColor.GetSaturation();
+            //        float lgt = pixelColor.GetBrightness();
 
-                    else if (sat < 0.25)
-                    {
-                        Hue gray = new Hue("Gray");
-                        colorList.Add(gray.Name);
-                    }
+            //        if (lgt < 0.2)
+            //        {
+            //            Hue black = new Hue("Black");
+            //            colorList.Add(black.Name);
+            //        }
+            //        else if (lgt > 0.8)
+            //        {
+            //            Hue white = new Hue("White");
+            //            colorList.Add(white.Name);
+            //        }
 
-                    else if (hue < 20)
-                    {
-                        Hue red = new Hue("Red");
-                        colorList.Add(red.Name);
-                    }
-                    else if (hue < 50 && lgt < 0.3)
-                    {
-                        Hue brown = new Hue("Brown");
-                        colorList.Add(brown.Name);
-                    }
-                    else if (hue < 50)
-                    {
-                        Hue orange = new Hue("Orange");
-                        colorList.Add(orange.Name);
-                    }
-                    else if (hue < 90)
-                    {
-                        Hue yellow = new Hue("Yellow");
-                        colorList.Add(yellow.Name);
-                    }
-                    else if (hue < 150)
-                    {
-                        Hue green = new Hue("Green");
-                        colorList.Add(green.Name);
-                    }
-                    else if (hue < 210)
-                    {
-                        Hue cyan = new Hue("Cyan");
-                        colorList.Add(cyan.Name);
-                    }
-                    else if (hue < 270)
-                    {
-                        Hue blue = new Hue("Blue");
-                        colorList.Add(blue.Name);
-                    }
-                    else if (hue < 330)
-                    {
-                        Hue magenta = new Hue("Magenta");
-                        colorList.Add(magenta.Name);
-                    }
-                    else
-                    {
-                        Hue ErrorColor = new Hue("ErrorColor");
-                        colorList.Add(ErrorColor.Name);
-                    }
-                }
-            }
+            //        else if (sat < 0.25)
+            //        {
+            //            Hue gray = new Hue("Gray");
+            //            colorList.Add(gray.Name);
+            //        }
+
+            //        else if (hue < 20)
+            //        {
+            //            Hue red = new Hue("Red");
+            //            colorList.Add(red.Name);
+            //        }
+            //        else if (hue < 50 && lgt < 0.3)
+            //        {
+            //            Hue brown = new Hue("Brown");
+            //            colorList.Add(brown.Name);
+            //        }
+            //        else if (hue < 50)
+            //        {
+            //            Hue orange = new Hue("Orange");
+            //            colorList.Add(orange.Name);
+            //        }
+            //        else if (hue < 90)
+            //        {
+            //            Hue yellow = new Hue("Yellow");
+            //            colorList.Add(yellow.Name);
+            //        }
+            //        else if (hue < 150)
+            //        {
+            //            Hue green = new Hue("Green");
+            //            colorList.Add(green.Name);
+            //        }
+            //        else if (hue < 210)
+            //        {
+            //            Hue cyan = new Hue("Cyan");
+            //            colorList.Add(cyan.Name);
+            //        }
+            //        else if (hue < 270)
+            //        {
+            //            Hue blue = new Hue("Blue");
+            //            colorList.Add(blue.Name);
+            //        }
+            //        else if (hue < 330)
+            //        {
+            //            Hue magenta = new Hue("Magenta");
+            //            colorList.Add(magenta.Name);
+            //        }
+            //        else
+            //        {
+            //            Hue ErrorColor = new Hue("ErrorColor");
+            //            colorList.Add(ErrorColor.Name);
+            //        }
+            //    }
+            //}
             //    //bitMapPic.Save(@"/home/pi/Desktop/BitmapImage.png", System.Drawing.Imaging.ImageFormat.Png);
+            #endregion
         }
-
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// Creates a dictionary and inserts a ItemName once making it unique, also icreases the value by 1 after every duplicate ItemName that is found.
-        /// <returns>Returns Dictionary availbleitems</returns>
-        public Dictionary<string, int> GetAllColors()
-        {
-
-            foreach (string color in colorList)
-            {
-                bool itemExists = false;
-                foreach (KeyValuePair<string, int> entry in availableItems)
-                {
-                    if (entry.Key == color)
-                    {
-                        itemExists = true;
-                    }
-                }
-
-                if (itemExists)
-                {
-                    availableItems[color] += 1;
-                }
-                else
-                {
-                    availableItems.Add(color, 1);
-                }
-            }
-
-            //TODO find the highest amount of color and send it to the messenger class
-            return availableItems;
-        } 
-        //public override string ToString()
-        //{
-        //    string builder = "";
-        //    Dictionary<string, int> dic = this.GetAllColors();
-        //    foreach (KeyValuePair<string, int> entry in dic)
-        //    {
-        //        builder += string.Format("{0}, Amount left: {1} \n", entry.Key, entry.Value);
-
-        //    }
-
-        //    return builder;
-        //}
     }
 }
