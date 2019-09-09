@@ -21,10 +21,11 @@ using System.Threading;
 
 namespace ColorPicker_Demo
 {
+    //x CHANGES TO RETURN TYPE
+    //+ MAYBE REMOVE IRONPYTHON? WE DON'T USE IT
     public class Picture
     {
         public Sorter sorter = new Sorter();
-        public Bitmap picBitMap;
         private string path;
 
         public string Path
@@ -43,10 +44,10 @@ namespace ColorPicker_Demo
 
         public Picture()
         {
-            picBitMap = new Bitmap(TakePicture());
+            TakePicture();
         }
 
-        public Bitmap TakePicture() //Takes the actual picture
+        public string TakePicture() //Takes the actual picture
         {
             try
             {
@@ -129,16 +130,13 @@ namespace ColorPicker_Demo
 
             // Path to image that python created
             Path = @"/home/pi/images/newImage.png";
-            Bitmap bigBoiImage = null;
-
-
+            //Bitmap bigBoiImage = null;
 
             bool foundImage = false;
             while (foundImage == false)
             {
                 try
                 {
-                    bigBoiImage = new Bitmap(Path);
                     Console.WriteLine("Found Image");
                     foundImage = true;
                 }
@@ -148,20 +146,20 @@ namespace ColorPicker_Demo
                 }
             }
             // Delete image to get ready for the next time
-            //File.Delete(path);
-            return bigBoiImage;
+            File.Delete(path);
+            return Path;
         }
 
-
-        public Bitmap ResizeImage(Bitmap originImage)       
-        {
-            Rectangle cloneRect = new Rectangle(0, 0, 200, 120);
-            System.Drawing.Imaging.PixelFormat pixelFormat = originImage.PixelFormat;
-            Bitmap cloneBitMap = originImage.Clone(cloneRect, pixelFormat);
-            Console.WriteLine("We made it to goal 2");
-            Console.ReadLine();
-            return cloneBitMap;
-        }
+        //! PRETTY SURE WE DON'T NEED THIS
+        //public Bitmap ResizeImage(Bitmap originImage)       
+        //{
+        //    Rectangle cloneRect = new Rectangle(0, 0, 200, 120);
+        //    System.Drawing.Imaging.PixelFormat pixelFormat = originImage.PixelFormat;
+        //    Bitmap cloneBitMap = originImage.Clone(cloneRect, pixelFormat);
+        //    Console.WriteLine("We made it to goal 2");
+        //    Console.ReadLine();
+        //    return cloneBitMap;
+        //}
     }
 }
 

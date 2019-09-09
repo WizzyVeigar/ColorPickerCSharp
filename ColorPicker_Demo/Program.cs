@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
+using System.Threading;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -44,28 +44,12 @@ namespace ColorPicker_Demo
         //                 "
         static void Main(string[] args)
         {
-            ColorDifferantier differantier = new ColorDifferantier();
-            ColorRange brown = new ColorRange(new CColor(50, 1, 1), new CColor(130, 60, 50), "Brown");
-            ColorRange red = new ColorRange(new CColor(51, 0, 0), new CColor(255, 40, 75), "red");
-            ColorRange orange = new ColorRange(new CColor(150, 63, 0), new CColor(255, 175, 35), "orange");
-            ColorRange yellow = new ColorRange(new CColor(208, 208, 0), new CColor(255, 255, 230), "yellow");
-            ColorRange green = new ColorRange(new CColor(0, 1, 0), new CColor(210, 255, 210), "green");
-            ColorRange blue = new ColorRange(new CColor(50, 0, 0), new CColor(130, 60, 50), "blue");
-            differantier.AddColorRange(brown);
-            differantier.AddColorRange(red);
-            differantier.AddColorRange(orange);
-            differantier.AddColorRange(yellow);
-            differantier.AddColorRange(green);
-            differantier.AddColorRange(blue);
-
-
-            string inputArg = "..\\..\\Sample\\";
+            string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
             const int k = 3;
             //Looks for the sample folder in all directories 
-            Console.WriteLine("Version 7.7.KMC");
+            Console.WriteLine("Version 7.9.KMC");
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine("Please wait a moment...");
-            //Messenger.RestartArm();
             //Console.Clear();
             Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
             string input = Console.ReadLine().ToLower();
@@ -75,42 +59,43 @@ namespace ColorPicker_Demo
                 input = Console.ReadLine().ToLower();
                 if (input == "r")
                 {
-                    Picture pic = new Picture();
-                    try
+                    for (int i = 0; i < 16; i++)
                     {
-                        Console.WriteLine(differantier.GetColorName(pic.sorter.Classify(pic.ResizeImage(GetDominantColour(pic.Path, k))))); //THIS IS POTENTIAL BS
-                        Console.ReadLine();
+                        Messenger.StartArm();
+                        Thread.Sleep(5000);
+                        Picture pic = new Picture();
+                        try
+                        {
+                            Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.Path, k))); //x NEEDS FIXING!!
+                            //Console.ReadLine();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            Console.ReadLine();
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        Console.ReadLine();
-                    }
+                    Messenger.RestartArm();
                 }
 
                 if (input == "w")
                 {
+                    Sorter sorter = new Sorter();
+                    sorter.MakeLists();
                     if (Directory.Exists(inputArg) == true)
                     {
                         foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
                         {
-                            GetDominantColour(file, k);
+                            Console.WriteLine(sorter.ClosestColors(GetDominantColour(file, k)) + "\n");
                         }
-                        return;
                     }
-                    //Checks if the sample image is in the same directory as the program
-                    if (File.Exists(inputArg) == true)
-                    {
-                        GetDominantColour(inputArg, k);
-                    }
-
+                    Console.ReadLine();
                 }
             }
-
             Console.WriteLine("Unable to open {0}. Ensure it's a file or directory", inputArg);
         }
 
-        private static Bitmap GetDominantColour(string inputFile, int k)
+        private static Color GetDominantColour(string inputFile, int k)
         {
             using (Image image = Image.FromFile(inputFile))
             {
@@ -141,17 +126,18 @@ namespace ColorPicker_Demo
                     KMeansClusteringCalculator clustering = new KMeansClusteringCalculator(); //Makes a KMC instance, so we can get calculate()
                     IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d); //Math starts here / Check it out!
 
-                    //Du kommer til at ende med et antal _colours lister alt efter antallet af K
-                    //_colours indeholder så alle de farver som var determined at være tættest på closest cluster
-                    //_colours beregner så det nye center for den cluster.English
+                    //You will end up with a numbre of _colours lists depending on the numbers of K
+                    //_colour contains all the colour that were determined to be closest to the cluster
+                    //_colours calculate the new center for that cluster
 
                     //Writes to Console
-                    Console.WriteLine("Dominant colours for {0}:", inputFile);
-                    foreach (Color color in dominantColours)
-                    {
-                        Console.WriteLine("K: {0} (#{1:x2}{2:x2}{3:x2})", color, color.R, color.G, color.B);
-                    }
-                    //CColor dominantCColor = new CColor(dominantColours[0].R, dominantColours[0].G, dominantColours[0].G);
+                    //? DO WE NEED THIS?
+                    //Console.WriteLine("Dominant colours for {0}:", inputFile);
+                    //? AND THIS?
+                    //foreach (Color color in dominantColours)
+                    //{
+                    //    Console.WriteLine("K: {0} (#{1:x2}{2:x2}{3:x2})", color, color.R, color.G, color.B);
+                    //}
 
                     //Make a bar for the most dominant colors beneath the image
                     const int swatchHeight = 20;
@@ -173,14 +159,11 @@ namespace ColorPicker_Demo
                         }
                         string outputFile = string.Format("{0}.output.png", Path.GetFileNameWithoutExtension(inputFile));
                         bmp.Save(outputFile, ImageFormat.Png);
-                        Console.WriteLine("We made it to goal 1");
-                        Console.ReadLine();
-                        return new Bitmap(bmp); // THIS IS POTENTIAL BS
+                        //Console.WriteLine("We made it to goal 1");
+                        //Console.ReadLine();
+                        Process.Start("explorer.exe", outputFile); //opens the newly created picture
 
-                        //Process.Start("explorer.exe", outputFile); //opens the newly created picture
-                        //Messenger.SendToArm(pic.sorter.availableItems.Aggregate((next, biggest) => next.Value > biggest.Value? next : biggest).Key);
-
-
+                        return dominantColours[0]; //! THIS IS NO LONGER BE BS!
                     }
                 }
             }

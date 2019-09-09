@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ColorDifferentiater
 {
+    //? DO WE STILL NEED THIS?
     public class CColor
     {
         /// <summary>

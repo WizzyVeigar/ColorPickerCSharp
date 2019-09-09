@@ -8,6 +8,7 @@ namespace ColorPicker_Demo
 {
     public class Hue : ColorsSC
     {
+        //? DO WE USE THIS?
         public Hue(string name) : base(name)
         {
         }

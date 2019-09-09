@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ColorDifferentiater
 {
+    //! PRETTY SURE WE DON'T NEED THIS ANYMORE
     /// <summary>
     /// Define a color range, lowerrange is the lowest rgba values which the color can have
     /// the upperrange is the highest rgb value the color can have

@@ -7,26 +7,31 @@ using System.IO.Ports;
 
 namespace ColorPicker_Demo
 {
+    //x NEEDS A START ARM METHOD
     static class Messenger
     {
         static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
-        static string toRobo;
-
+        public static void StartArm()
+        {
+            if (!seriPort.IsOpen == true)
+            {
+                seriPort.Open();
+                seriPort.Write("s");
+                seriPort.Close();
+            }
+        }
         public static void RestartArm()
         {
             if (!seriPort.IsOpen == true)
             {
                 seriPort.Open();
-                toRobo = "r";
-                seriPort.Write(toRobo);
+                seriPort.Write("r");
                 seriPort.Close();
             }
         }
 
         public static void SendToArm(string theCOLOR)
         {
-            
-
             if (!seriPort.IsOpen == true)
             {
                 switch (theCOLOR)

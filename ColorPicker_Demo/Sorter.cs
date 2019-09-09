@@ -2,117 +2,244 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
-using System.Windows.Media;
-using ColorDifferentiater;
+using System.IO;
 
 namespace ColorPicker_Demo
 {
     public class Sorter
     {
-        public List<string> colorList = new List<string>();
-        //public Dictionary<string, int> availableItems = new Dictionary<string, int>();
-                          
-        //List for colors in the image
-        // Loop through the images pixels to get color.
-        public CColor Classify(Bitmap bitMapPic)
+        //x MAKE LISTS FOR THE REMAINING COLORS
+        //x TAKE PICTURES OF REMAINING M&M
+        //x CUT THOSE PICTURES
+        //x ADD LISTS TO ClosestColors()
+        //x SEE IF THE IFS IN MakeList() CAN BE MADE INTO METHOD
+        //x MAYBE NEW PICTURES
+        //x BROWN NEEDS FIXING, BROWN PICS ARE RED
+
+        string colorLib = "..\\..\\ColorLib\\";
+
+        private List<Color> redList = new List<Color>();
+        public List<Color> RedList
         {
-            var colorIncidence = new Dictionary<int, int>();
-            for (int x = 0; x < bitMapPic.Size.Width; x++)
-                for (int y = 0; y < bitMapPic.Size.Height; y++)
+            get { return redList; }
+            set { redList = value; }
+        }
+
+        private List<Color> orangeList = new List<Color>();
+        public List<Color> OrangeList
+        {
+            get { return orangeList; }
+            set { orangeList = value; }
+        }
+
+        private List<Color> yellowList = new List<Color>();
+        public List<Color> YellowList
+        {
+            get { return yellowList; }
+            set { yellowList = value; }
+        }
+
+        private List<Color> greenList = new List<Color>();
+        public List<Color> GreenList
+        {
+            get { return greenList; }
+            set { greenList = value; }
+        }
+
+        private List<Color> blueList = new List<Color>();
+        public List<Color> BlueList
+        {
+            get { return blueList; }
+            set { blueList = value; }
+        }
+
+        private List<Color> brownList = new List<Color>();
+        public List<Color> BrownList
+        {
+            get { return brownList; }
+            set { brownList = value; }
+        }
+
+        int ColorDiff(Color c1, Color c2) //+ COULD POSSIBLY BE ERASED AND USE EuclideanDistance() FROM KCluster.cs INSTEAD!!!!
+        {
+            return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
+                                   + (c1.G - c2.G) * (c1.G - c2.G)
+                                   + (c1.B - c2.B) * (c1.B - c2.B));
+        }
+        public int ClosestColorTo(List<Color> colors, Color target) //THIS IS THE METHOD THAT CALCULATES THE CLOSEST COLOR
+        {
+            int colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
+            return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
+        }
+
+        public string ClosestColors(Color compareColor) //GETS THE CLOSEST COLOR FROM EACH COLOR LIST. THEN GETS THE CLOSEST COLOR FROM THOSE COLORS AND RETURNS THE NAME OF THE COLOR LIST
+        {
+            List<Color> closestColors = new List<Color>();
+            closestColors.Add(Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()));
+            closestColors.Add(Color.FromArgb(OrangeList[ClosestColorTo(OrangeList, compareColor)].ToArgb()));
+            closestColors.Add(Color.FromArgb(YellowList[ClosestColorTo(YellowList, compareColor)].ToArgb()));
+            closestColors.Add(Color.FromArgb(GreenList[ClosestColorTo(GreenList, compareColor)].ToArgb()));
+            closestColors.Add(Color.FromArgb(BlueList[ClosestColorTo(BlueList, compareColor)].ToArgb()));
+            closestColors.Add(Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb()));
+
+            return FindListName(FinalClosestColor(closestColors, compareColor));
+        }
+
+        Color FinalClosestColor(List<Color> newList, Color compareColor) //GETS THE CLOSEST COLOR FROM OUR CLOSEST COLORS
+        {
+            Color closestColor = Color.FromArgb(newList[ClosestColorTo(newList, compareColor)].ToArgb());
+
+            return closestColor;
+        }
+        string FindListName(Color closestColor) //LOOK AT NAME
+        {
+            if (RedList.Contains(closestColor))
+            {
+                return "Red";
+            }
+            if (OrangeList.Contains(closestColor))
+            {
+                return "Orange";
+            }
+            if (YellowList.Contains(closestColor))
+            {
+                return "Yellow";
+            }
+            if (GreenList.Contains(closestColor))
+            {
+                return "Green";
+            }
+            if (BlueList.Contains(closestColor))
+            {
+                return "Blue";
+            }
+            if (BrownList.Contains(closestColor))
+            {
+                return "Brown";
+            }
+            return null;
+        }
+        public void MakeLists() //MAKES OUR LISTS CONTAINING OUR KNOW COLORS
+        {
+            if (Directory.Exists(colorLib) == true)
+            {
+                foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(colorLib), "*.*", SearchOption.AllDirectories))
                 {
-                    var pixelColor = bitMapPic.GetPixel(x, y).ToArgb();
-                    if (colorIncidence.Keys.Contains(pixelColor))
-                        colorIncidence[pixelColor]++;
-                    else
-                        colorIncidence.Add(pixelColor, 1);
+                    if (file.Contains("red"))
+                    {
+                        AddPixelColor(redList, file);
+                    }
+                    if (file.Contains("orange"))
+                    {
+                        AddPixelColor(orangeList, file);
+                    }
+                    if (file.Contains("yellow"))
+                    {
+                        AddPixelColor(yellowList, file);
+                    }
+                    if (file.Contains("green"))
+                    {
+                        AddPixelColor(greenList, file);
+                    }
+                    if (file.Contains("blue"))
+                    {
+                        AddPixelColor(blueList, file);
+                    }
+                    if (file.Contains("brown"))
+                    {
+                        AddPixelColor(brownList, file);
+                    }
                 }
+            }
+        }
+        public void AddPixelColor(List<Color> list, string file)
+        {
+            Bitmap bitmap = new Bitmap(file);
 
-
-            // colorIncidence.Keys.ElementAt(0)
-            System.Drawing.Color a = System.Drawing.Color.FromArgb(colorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Key);
-            Console.WriteLine(a.R +" "+ a.G +" "+ a.B);
-            Console.WriteLine(colorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Key);
-            CColor dominant = new CColor(a.R, a.G, a.B); //ThiS IS POTENTIAL BS
-            Console.WriteLine("We made it to goal 3");
-            Console.ReadLine();
-            return dominant;
-            #region BadSorter
-            //for (int x = 0; x < bitMapPic.Width; x++)
-            //{
-            //    for (int y = 0; y < bitMapPic.Height; y++)
-            //    {
-            //        System.Drawing.Color pixelColor = bitMapPic.GetPixel(x, y);
-
-            //        float hue = pixelColor.GetHue();
-            //        float sat = pixelColor.GetSaturation();
-            //        float lgt = pixelColor.GetBrightness();
-
-            //        if (lgt < 0.2)
-            //        {
-            //            Hue black = new Hue("Black");
-            //            colorList.Add(black.Name);
-            //        }
-            //        else if (lgt > 0.8)
-            //        {
-            //            Hue white = new Hue("White");
-            //            colorList.Add(white.Name);
-            //        }
-
-            //        else if (sat < 0.25)
-            //        {
-            //            Hue gray = new Hue("Gray");
-            //            colorList.Add(gray.Name);
-            //        }
-
-            //        else if (hue < 20)
-            //        {
-            //            Hue red = new Hue("Red");
-            //            colorList.Add(red.Name);
-            //        }
-            //        else if (hue < 50 && lgt < 0.3)
-            //        {
-            //            Hue brown = new Hue("Brown");
-            //            colorList.Add(brown.Name);
-            //        }
-            //        else if (hue < 50)
-            //        {
-            //            Hue orange = new Hue("Orange");
-            //            colorList.Add(orange.Name);
-            //        }
-            //        else if (hue < 90)
-            //        {
-            //            Hue yellow = new Hue("Yellow");
-            //            colorList.Add(yellow.Name);
-            //        }
-            //        else if (hue < 150)
-            //        {
-            //            Hue green = new Hue("Green");
-            //            colorList.Add(green.Name);
-            //        }
-            //        else if (hue < 210)
-            //        {
-            //            Hue cyan = new Hue("Cyan");
-            //            colorList.Add(cyan.Name);
-            //        }
-            //        else if (hue < 270)
-            //        {
-            //            Hue blue = new Hue("Blue");
-            //            colorList.Add(blue.Name);
-            //        }
-            //        else if (hue < 330)
-            //        {
-            //            Hue magenta = new Hue("Magenta");
-            //            colorList.Add(magenta.Name);
-            //        }
-            //        else
-            //        {
-            //            Hue ErrorColor = new Hue("ErrorColor");
-            //            colorList.Add(ErrorColor.Name);
-            //        }
-            //    }
-            //}
-            //    //bitMapPic.Save(@"/home/pi/Desktop/BitmapImage.png", System.Drawing.Imaging.ImageFormat.Png);
-            #endregion
+            for (int i = 0; i < bitmap.Width; i++)
+            {
+                for (int j = 0; j < bitmap.Height; j++)
+                {
+                    list.Add(Color.FromArgb(bitmap.GetPixel(i, j).ToArgb()));
+                }
+            }
         }
     }
 }
+#region BadSorter
+//for (int x = 0; x < bitMapPic.Width; x++)
+//{
+//    for (int y = 0; y < bitMapPic.Height; y++)
+//    {
+//        System.Drawing.Color pixelColor = bitMapPic.GetPixel(x, y);
+
+//        float hue = pixelColor.GetHue();
+//        float sat = pixelColor.GetSaturation();
+//        float lgt = pixelColor.GetBrightness();
+
+//        if (lgt < 0.2)
+//        {
+//            Hue black = new Hue("Black");
+//            colorList.Add(black.Name);
+//        }
+//        else if (lgt > 0.8)
+//        {
+//            Hue white = new Hue("White");
+//            colorList.Add(white.Name);
+//        }
+
+//        else if (sat < 0.25)
+//        {
+//            Hue gray = new Hue("Gray");
+//            colorList.Add(gray.Name);
+//        }
+
+//        else if (hue < 20)
+//        {
+//            Hue red = new Hue("Red");
+//            colorList.Add(red.Name);
+//        }
+//        else if (hue < 50 && lgt < 0.3)
+//        {
+//            Hue brown = new Hue("Brown");
+//            colorList.Add(brown.Name);
+//        }
+//        else if (hue < 50)
+//        {
+//            Hue orange = new Hue("Orange");
+//            colorList.Add(orange.Name);
+//        }
+//        else if (hue < 90)
+//        {
+//            Hue yellow = new Hue("Yellow");
+//            colorList.Add(yellow.Name);
+//        }
+//        else if (hue < 150)
+//        {
+//            Hue green = new Hue("Green");
+//            colorList.Add(green.Name);
+//        }
+//        else if (hue < 210)
+//        {
+//            Hue cyan = new Hue("Cyan");
+//            colorList.Add(cyan.Name);
+//        }
+//        else if (hue < 270)
+//        {
+//            Hue blue = new Hue("Blue");
+//            colorList.Add(blue.Name);
+//        }
+//        else if (hue < 330)
+//        {
+//            Hue magenta = new Hue("Magenta");
+//            colorList.Add(magenta.Name);
+//        }
+//        else
+//        {
+//            Hue ErrorColor = new Hue("ErrorColor");
+//            colorList.Add(ErrorColor.Name);
+//        }
+//    }
+//}
+//    //bitMapPic.Save(@"/home/pi/Desktop/BitmapImage.png", System.Drawing.Imaging.ImageFormat.Png);
+#endregion

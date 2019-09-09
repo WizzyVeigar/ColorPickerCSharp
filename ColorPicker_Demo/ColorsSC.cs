@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ColorPicker_Demo
 {
+    //? WHAT IS THIS USED FOR? DON'T REMEMBER!
     public abstract class ColorsSC
     {
         private string name;
