@@ -11,20 +11,52 @@ namespace ColorPicker_Demo
     static class Messenger
     {
         static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
+
+        public static string StartProcess() //! STARTS THE ARM!
+        {
+            while (true)
+            {
+                seriPort.Close();
+                seriPort.Open();
+                string a = seriPort.ReadExisting();
+
+                if (a.Trim().Contains("h"))
+                {
+                    seriPort.Close();
+                    return "s";
+                }
+                return "";
+            }
+        }
+        public static string StopProcess()
+        {
+            while (true)
+            {
+                seriPort.Close();
+                seriPort.Open();
+                string a = seriPort.ReadExisting();
+
+                if (a.Contains("i"))
+                {
+                    seriPort.Close();
+                    return "t";
+                }
+                return "";
+            }
+        }
+
         public static void StartArm()
         {
-            if (!seriPort.IsOpen == true)
+            if (seriPort.IsOpen == true)
             {
-                seriPort.Open();
                 seriPort.Write("s");
                 seriPort.Close();
             }
         }
         public static void RestartArm()
         {
-            if (!seriPort.IsOpen == true)
+            if (seriPort.IsOpen == true)
             {
-                seriPort.Open();
                 seriPort.Write("r");
                 seriPort.Close();
             }

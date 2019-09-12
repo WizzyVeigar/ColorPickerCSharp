@@ -16,7 +16,7 @@ namespace ColorPicker_Demo
 {
     class Program
     {
-
+        #region pils
         //                            |.
         //                           ::.
         //                           :::
@@ -42,6 +42,12 @@ namespace ColorPicker_Demo
         //                 / :'                   `\:
         //                ( /                       `"
         //                 "
+        #endregion
+
+        //x MAKE STOP BUTTON
+        //x IMPLEMENT STOP BUTTON
+        //+ CLEAN UP CODE + SEE IF ANY COMMENTS ARE NEEDED/MISSING
+
         static void Main(string[] args)
         {
             string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
@@ -59,23 +65,29 @@ namespace ColorPicker_Demo
                 input = Console.ReadLine().ToLower();
                 if (input == "r")
                 {
-                    for (int i = 0; i < 16; i++)
+                    while (true)
                     {
-                        Messenger.StartArm();
-                        Thread.Sleep(5000);
-                        Picture pic = new Picture();
-                        try
+                        Thread sortingProcessThread = new Thread(SortingProcess);
+
+                        Console.WriteLine("Press button to start");
+                        input = Messenger.StartProcess();
+                        //Console.Clear();
+                        if (input == "s")
                         {
-                            Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.Path, k))); //x NEEDS FIXING!!
-                            //Console.ReadLine();
+                            sortingProcessThread.Start();
                         }
-                        catch (Exception e)
+
+                        while (sortingProcessThread.IsAlive)
                         {
-                            Console.WriteLine(e.Message);
-                            Console.ReadLine();
+                            input = Messenger.StopProcess();
+
+                            if (input == "t")
+                            {
+                                sortingProcessThread.Abort(); ;
+                                Messenger.RestartArm();
+                            }
                         }
                     }
-                    Messenger.RestartArm();
                 }
 
                 if (input == "w")
@@ -84,15 +96,47 @@ namespace ColorPicker_Demo
                     sorter.MakeLists();
                     if (Directory.Exists(inputArg) == true)
                     {
-                        foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
+                        for (int i = 1; i < 51; i++)
                         {
-                            Console.WriteLine(sorter.ClosestColors(GetDominantColour(file, k)) + "\n");
+                            Console.WriteLine("Test number {0}", i);
+                            List<string> checkList = new List<string>()
+                    {
+                        "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
+                    };
+
+                            List<string> results = new List<string>();
+                            foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
+                            {
+                                results.Add(sorter.ClosestColors(GetDominantColour(file, k)));
+                            }
+                            if (!checkList.SequenceEqual(results))
+                            {
+                                Console.WriteLine(string.Join("\n", results));
+                            }
+                            Console.WriteLine("Done");
                         }
                     }
                     Console.ReadLine();
                 }
             }
             Console.WriteLine("Unable to open {0}. Ensure it's a file or directory", inputArg);
+        }
+
+        public static void SortingProcess()
+        {
+            Messenger.StartArm();
+            Thread.Sleep(5000);
+            Picture pic = new Picture();
+            try
+            {
+                Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.Path, k))); //x NEEDS FIXING!!
+                                                                                               //Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+            }
         }
 
         private static Color GetDominantColour(string inputFile, int k)
@@ -138,33 +182,33 @@ namespace ColorPicker_Demo
                     //{
                     //    Console.WriteLine("K: {0} (#{1:x2}{2:x2}{3:x2})", color, color.R, color.G, color.B);
                     //}
-
+                    //! NOt REALLY NEEDED
                     //Make a bar for the most dominant colors beneath the image
-                    const int swatchHeight = 20;
-                    using (Bitmap bmp = new Bitmap(resizedBitMapImage.Width, resizedBitMapImage.Height + swatchHeight))
-                    {
-                        using (Graphics gfx = Graphics.FromImage(bmp))
-                        {
-                            gfx.DrawImage(resizedBitMapImage, new Rectangle(0, 0, resizedBitMapImage.Width, resizedBitMapImage.Height));
+                    //const int swatchHeight = 20;
+                    //using (Bitmap bmp = new Bitmap(resizedBitMapImage.Width, resizedBitMapImage.Height + swatchHeight))
+                    //{
+                    //    using (Graphics gfx = Graphics.FromImage(bmp))
+                    //    {
+                    //        gfx.DrawImage(resizedBitMapImage, new Rectangle(0, 0, resizedBitMapImage.Width, resizedBitMapImage.Height));
 
-                            //makes a block of each dominant color, based on K amount
-                            int swatchWidth = (int)Math.Floor(bmp.Width / (k * 1.0f));
-                            for (int i = 0; i < k; i++)
-                            {
-                                using (SolidBrush brush = new SolidBrush(dominantColours[i]))
-                                {
-                                    gfx.FillRectangle(brush, new Rectangle(i * swatchWidth, resizedBitMapImage.Height, swatchWidth, swatchHeight));
-                                }
-                            }
-                        }
-                        string outputFile = string.Format("{0}.output.png", Path.GetFileNameWithoutExtension(inputFile));
-                        bmp.Save(outputFile, ImageFormat.Png);
-                        //Console.WriteLine("We made it to goal 1");
-                        //Console.ReadLine();
-                        Process.Start("explorer.exe", outputFile); //opens the newly created picture
+                    //        //makes a block of each dominant color, based on K amount
+                    //        int swatchWidth = (int)Math.Floor(bmp.Width / (k * 1.0f));
+                    //        for (int i = 0; i < k; i++)
+                    //        {
+                    //            using (SolidBrush brush = new SolidBrush(dominantColours[i]))
+                    //            {
+                    //                gfx.FillRectangle(brush, new Rectangle(i * swatchWidth, resizedBitMapImage.Height, swatchWidth, swatchHeight));
+                    //            }
+                    //        }
+                    //    }
+                    //    string outputFile = string.Format("{0}.output.png", Path.GetFileNameWithoutExtension(inputFile));
+                    //    bmp.Save(outputFile, ImageFormat.Png);
+                    //    Console.WriteLine("We made it to goal 1");
+                    //    Console.ReadLine();
+                    //    Process.Start("explorer.exe", outputFile); //opens the newly created picture
 
                         return dominantColours[0]; //! THIS IS NO LONGER BE BS!
-                    }
+                    
                 }
             }
         }
