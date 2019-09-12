@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using IronPython;
-using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using System;
 using System.IO;
@@ -22,7 +20,7 @@ using System.Threading;
 namespace ColorPicker_Demo
 {
     //x CHANGES TO RETURN TYPE
-    //+ MAYBE REMOVE IRONPYTHON? WE DON'T USE IT
+    //x MAYBE REMOVE IRONPYTHON? WE DON'T USE IT
     public class Picture
     {
         public Sorter sorter = new Sorter();
