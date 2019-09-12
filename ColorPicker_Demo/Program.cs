@@ -11,12 +11,7 @@ using System.Text;
 using ColorDifferentiater;
 using System.Threading.Tasks;
 
-
-namespace ColorPicker_Demo
-{
-    class Program
-    {
-        #region pils
+#region pils
         //                            |.
         //                           ::.
         //                           :::
@@ -44,9 +39,14 @@ namespace ColorPicker_Demo
         //                 "
         #endregion
 
+namespace ColorPicker_Demo
+{
+    class Program
+    {
         //x MAKE STOP BUTTON
         //x IMPLEMENT STOP BUTTON
         //x CLEAN UP CODE + SEE IF ANY COMMENTS ARE NEEDED/MISSING
+
         const int k = 3;
         static void Main(string[] args)
         {
