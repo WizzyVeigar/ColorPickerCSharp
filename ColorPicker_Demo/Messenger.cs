@@ -23,7 +23,7 @@ namespace ColorPicker_Demo
                 if (a.Trim().Contains("h"))
                 {
                     seriPort.Close();
-                    return "s";
+                    return "h";
                 }
                 return "";
             }
@@ -36,7 +36,7 @@ namespace ColorPicker_Demo
                 seriPort.Open();
                 string a = seriPort.ReadExisting();
 
-                if (a.Contains("i"))
+                if (a.Contains("t"))
                 {
                     seriPort.Close();
                     return "t";

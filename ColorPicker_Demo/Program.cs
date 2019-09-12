@@ -72,7 +72,7 @@ namespace ColorPicker_Demo
                         Console.WriteLine("Press button to start");
                         input = Messenger.StartProcess();
                         //Console.Clear();
-                        if (input == "s")
+                        if (input == "h")
                         {
                             sortingProcessThread.Start();
                         }
