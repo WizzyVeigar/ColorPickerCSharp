@@ -12,7 +12,7 @@ namespace ColorPicker_Demo
     {
         static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
 
-        public static string StartProcess() // STARTS THE ARM!
+        public static string StartProcess() //STARTS THE ARM!
         {
             while (true)
             {
@@ -29,7 +29,7 @@ namespace ColorPicker_Demo
             }
         }
 
-        public static string StopProcess() // STOPS THE ARM
+        public static string StopProcess() //STOPS THE ARM
         {
             while (true)
             {
@@ -46,7 +46,7 @@ namespace ColorPicker_Demo
             }
         }
 
-        public static void StartArm() // STARTS THE ARM
+        public static void StartArm() //STARTS THE ARM
         {
             if (seriPort.IsOpen == true)
             {
@@ -64,7 +64,7 @@ namespace ColorPicker_Demo
             }
         }
 
-        public static void SendToArm(string theCOLOR) // SENDS THE COLOR TO THE ARM
+        public static void SendToArm(string theCOLOR) //SENDS THE COLOR TO THE ARM
         {
             if (!seriPort.IsOpen == true)
             {

@@ -46,7 +46,7 @@ namespace ColorPicker_Demo
 
         //x MAKE STOP BUTTON
         //x IMPLEMENT STOP BUTTON
-        //+ CLEAN UP CODE + SEE IF ANY COMMENTS ARE NEEDED/MISSING
+        //x CLEAN UP CODE + SEE IF ANY COMMENTS ARE NEEDED/MISSING
         const int k = 3;
         static void Main(string[] args)
         {
@@ -130,7 +130,7 @@ namespace ColorPicker_Demo
             try
             {
                 Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.Path, k))); //x NEEDS FIXING!!
-                                                                                               //Console.ReadLine();
+                //Console.ReadLine();
             }
             catch (Exception e)
             {
@@ -182,7 +182,7 @@ namespace ColorPicker_Demo
                     //{
                     //    Console.WriteLine("K: {0} (#{1:x2}{2:x2}{3:x2})", color, color.R, color.G, color.B);
                     //}
-                    //! NOt REALLY NEEDED
+                    //! NOT REALLY NEEDED
                     //Make a bar for the most dominant colors beneath the image
                     //const int swatchHeight = 20;
                     //using (Bitmap bmp = new Bitmap(resizedBitMapImage.Width, resizedBitMapImage.Height + swatchHeight))
@@ -207,7 +207,7 @@ namespace ColorPicker_Demo
                     //    Console.ReadLine();
                     //    Process.Start("explorer.exe", outputFile); //opens the newly created picture
 
-                    return dominantColours[0]; //! THIS IS NO LONGER BE BS!
+                    return dominantColours[0]; //! THIS IS NO LONGER BS!
 
                 }
             }
