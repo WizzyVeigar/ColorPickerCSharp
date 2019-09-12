@@ -53,7 +53,7 @@ namespace ColorPicker_Demo
             string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
             const int k = 3;
             //Looks for the sample folder in all directories 
-            Console.WriteLine("Version 7.9.KMC");
+            Console.WriteLine("Version 8.0.KMC");
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine("Please wait a moment...");
             //Console.Clear();
