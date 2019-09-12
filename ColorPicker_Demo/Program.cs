@@ -47,11 +47,11 @@ namespace ColorPicker_Demo
         //x MAKE STOP BUTTON
         //x IMPLEMENT STOP BUTTON
         //+ CLEAN UP CODE + SEE IF ANY COMMENTS ARE NEEDED/MISSING
-
+        const int k = 3;
         static void Main(string[] args)
         {
             string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
-            const int k = 3;
+
             //Looks for the sample folder in all directories 
             Console.WriteLine("Version 8.0.KMC");
             Console.Title = "R2.0 SSSorter";
@@ -207,8 +207,8 @@ namespace ColorPicker_Demo
                     //    Console.ReadLine();
                     //    Process.Start("explorer.exe", outputFile); //opens the newly created picture
 
-                        return dominantColours[0]; //! THIS IS NO LONGER BE BS!
-                    
+                    return dominantColours[0]; //! THIS IS NO LONGER BE BS!
+
                 }
             }
         }
