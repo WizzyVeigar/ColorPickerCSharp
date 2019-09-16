@@ -150,10 +150,6 @@ namespace ColorPicker_Demo
 
         private static Color GetDominantColour(Image image, int k)
         {
-
-            Console.WriteLine("Starting GetDomCol");
-
-            Console.WriteLine("Before resizing");
             const int maxResizedDimension = 200;
             Size resizedSize; //Resizes the image to suitable size
             if (image.Width > image.Height)
@@ -165,7 +161,7 @@ namespace ColorPicker_Demo
                 resizedSize = new Size((int)Math.Floor((image.Width / (image.Width * 1.0f)) * maxResizedDimension), maxResizedDimension);
                 //If height > width = 200px,200px
             }
-            Console.WriteLine("Resize done");
+
             using (Bitmap resizedBitMapImage = new Bitmap(image, resizedSize)) /*making it a bitmap*/
             {
                 //The amount the list can hold is equal to the picture's squaremeters.
@@ -177,7 +173,6 @@ namespace ColorPicker_Demo
                         colors.Add(resizedBitMapImage.GetPixel(x, y));
                     }
                 }
-                Console.WriteLine("Beginning clustercalc");
                 KMeansClusteringCalculator clustering = new KMeansClusteringCalculator(); //Makes a KMC instance, so we can get calculate()
                 IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d); //Math starts here / Check it out!
 
@@ -217,7 +212,6 @@ namespace ColorPicker_Demo
                 //    Console.WriteLine("We made it to goal 1");
                 //    Console.ReadLine();
                 //    Process.Start("explorer.exe", outputFile); //opens the newly created picture
-                Console.WriteLine("Task 1 complete, GetDominantColor()");
                 Console.WriteLine(dominantColours[0]);
                 return dominantColours[0]; //! THIS IS NO LONGER BS!
             }

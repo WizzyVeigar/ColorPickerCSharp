@@ -90,7 +90,6 @@ namespace ColorPicker_Demo
         {
             Color closestColor = Color.FromArgb(newList[ClosestColorTo(newList, compareColor)].ToArgb());
 
-            Console.WriteLine("Task 2 complete, FinalClosestColor");
             return closestColor;
         }
         string FindListName(Color closestColor) //LOOK AT NAME
