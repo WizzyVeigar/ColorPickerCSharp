@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using ColorDifferentiater;
 using System.Threading.Tasks;
 
 #region pils
@@ -83,7 +82,7 @@ namespace ColorPicker_Demo
 
                             if (input == "t")
                             {
-                                sortingProcessThread.Abort(); ;
+                                sortingProcessThread.Abort();
                                 Messenger.RestartArm();
                             }
                         }
@@ -100,9 +99,9 @@ namespace ColorPicker_Demo
                         {
                             Console.WriteLine("Test number {0}", i);
                             List<string> checkList = new List<string>()
-                    {
-                        "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
-                    };
+                            {
+                                "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
+                            };
 
                             List<string> results = new List<string>();
                             foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
@@ -208,7 +207,6 @@ namespace ColorPicker_Demo
                     //    Process.Start("explorer.exe", outputFile); //opens the newly created picture
 
                     return dominantColours[0]; //! THIS IS NO LONGER BS!
-
                 }
             }
         }

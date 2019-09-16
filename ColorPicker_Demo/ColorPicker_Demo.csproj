@@ -97,10 +97,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CColor.cs" />
-    <Compile Include="ColorDifferantier.cs" />
-    <Compile Include="Hue.cs" />
-    <Compile Include="ColorsSC.cs" />
     <Compile Include="KCluster.cs" />
     <Compile Include="KMeansClusteringCalculator.cs" />
     <Compile Include="Messenger.cs" />
