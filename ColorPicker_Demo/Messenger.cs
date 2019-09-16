@@ -7,58 +7,97 @@ using System.IO.Ports;
 
 namespace ColorPicker_Demo
 {
+    //x NEEDS A START ARM METHOD
     static class Messenger
     {
         static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
-        static string toRobo;
 
-        public static void RestartArm()
+        public static string StartProcess() //STARTS THE ARM!
         {
-            if (!seriPort.IsOpen == true)
+            while (true)
             {
+                seriPort.Close(); //! MAYBE NEEDS TO BE MOVED TO THE BOTTOM
                 seriPort.Open();
-                toRobo = "r";
-                seriPort.Write(toRobo);
+                string a = seriPort.ReadExisting();
+
+                if (a.Trim().Contains("h"))
+                {
+                    seriPort.Close();
+                    return "h";
+                }
+                return "";
+            }
+        }
+
+        public static string StopProcess() //STOPS THE ARM
+        {
+            while (true)
+            {
+                seriPort.Close(); //! MAYBE NEEDS TO BE MOVED TO THE BOTTOM
+                seriPort.Open();
+                string a = seriPort.ReadExisting();
+
+                if (a.Contains("t"))
+                {
+                    seriPort.Close();
+                    return "t";
+                }
+                return "";
+            }
+        }
+
+        public static void StartArm() //STARTS THE ARM
+        {
+            if (seriPort.IsOpen == true)
+            {
+                seriPort.Write("s");
                 seriPort.Close();
             }
         }
 
-        public static void SendToArm(string theCOLOR)
+        public static void RestartArm() //RESETS THE ARM
         {
-            
+            if (seriPort.IsOpen == true)
+            {
+                seriPort.Write("r");
+                seriPort.Close();
+            }
+        }
 
+        public static void SendToArm(string theCOLOR) //SENDS THE COLOR TO THE ARM
+        {
             if (!seriPort.IsOpen == true)
             {
                 switch (theCOLOR)
                 {
                     case "Red":
-                        toRobo = "a";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("a");
                         seriPort.Close();
                         break;
                     case "Orange":
-                        toRobo = "b";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("b");
                         seriPort.Close();
                         break;
                     case "Yellow":
-                        toRobo = "c";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("c");
                         seriPort.Close();
                         break;
                     case "Green":
-                        toRobo = "d";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("d");
                         seriPort.Close();
                         break;
                     case "Blue":
-                        toRobo = "e";
                         seriPort.Open();
-                        seriPort.Write(toRobo);
+                        seriPort.Write("e");
+                        seriPort.Close();
+                        break;
+                    case "Brown":
+                        seriPort.Open();
+                        seriPort.Write("f");
                         seriPort.Close();
                         break;
                     default:
