@@ -11,32 +11,32 @@ using System.Text;
 using System.Threading.Tasks;
 
 #region pils
-        //                            |.
-        //                           ::.
-        //                           :::
-        //          ___              |::
-        //         `-._''--.._       |::
-        //             `-._   `-._.|::
-        //                `-._    `-::::
-        //                   `.     |:::.
-        //                     )    |::`:"-._ 
-        //                   <'   _.7  ::::::`-,.._
-        //                    `-.:        `` '::::::".
-        //                    .:'       .    .   `::::\
-        //                  .:'        .           .:::}
-        //               _.:'    __          .     :::/
-        // ,-.___,,..--'' --.""``  ``"".-- --,.._____.-.
-        //((___ """   -- ...     ....   __  ______  (D  )
-        // "-'`   ```''-.  __,,.......,,__      ::.  `-"
-        //               `<-....,,,,....-<   .:::'
-        //                 "._       ___,,._:::(
-        //                    ::--=''       `\:::.
-        //                   / :::'           `\::.
-        //        pils      / ::'               `\::
-        //                 / :'                   `\:
-        //                ( /                       `"
-        //                 "
-        #endregion
+//                            |.
+//                           ::.
+//                           :::
+//          ___              |::
+//         `-._''--.._       |::
+//             `-._   `-._.|::
+//                `-._    `-::::
+//                   `.     |:::.
+//                     )    |::`:"-._ 
+//                   <'   _.7  ::::::`-,.._
+//                    `-.:        `` '::::::".
+//                    .:'       .    .   `::::\
+//                  .:'        .           .:::}
+//               _.:'    __          .     :::/
+// ,-.___,,..--'' --.""``  ``"".-- --,.._____.-.
+//((___ """   -- ...     ....   __  ______  (D  )
+// "-'`   ```''-.  __,,.......,,__      ::.  `-"
+//               `<-....,,,,....-<   .:::'
+//                 "._       ___,,._:::(
+//                    ::--=''       `\:::.
+//                   / :::'           `\::.
+//        pils      / ::'               `\::
+//                 / :'                   `\:
+//                ( /                       `"
+//                 "
+#endregion
 
 namespace ColorPicker_Demo
 {
@@ -51,8 +51,9 @@ namespace ColorPicker_Demo
         {
             string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
 
+            Sorter.MakeLists();
             //Looks for the sample folder in all directories 
-            Console.WriteLine("Version 8.0.KMC");
+            Console.WriteLine("Version 8.5.KMC");
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine("Please wait a moment...");
             //Console.Clear();
@@ -92,8 +93,7 @@ namespace ColorPicker_Demo
 
                 if (input == "w")
                 {
-                    Sorter sorter = new Sorter();
-                    sorter.MakeLists();
+                    Sorter.MakeLists();
                     if (Directory.Exists(inputArg) == true)
                     {
                         for (int i = 1; i < 51; i++)
@@ -107,7 +107,7 @@ namespace ColorPicker_Demo
                             List<string> results = new List<string>();
                             foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
                             {
-                                results.Add(sorter.ClosestColors(GetDominantColour(file, k)));
+                                //results.Add(sorter.ClosestColors(GetDominantColour(file, k)));
                             }
                             if (!checkList.SequenceEqual(results))
                             {
@@ -124,95 +124,107 @@ namespace ColorPicker_Demo
 
         public static void SortingProcess()
         {
-            Messenger.StartArm();
-            Thread.Sleep(5000);
-            Picture pic = new Picture();
-            try
+            while (true)
             {
-                Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.Path, k))); //x NEEDS FIXING!!
-                //Console.ReadLine();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.ReadLine();
+                Messenger.StartArm();
+                Thread.Sleep(5000);
+                Picture pic = new Picture();
+                try
+                {
+                    Console.WriteLine("Sorting....");
+                    Console.WriteLine(pic.Path);
+                    Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.image, k))); //x NEEDS FIXING!!
+                    Console.WriteLine(pic.sorter.theCOLOR);
+                    File.Delete(pic.Path);// Delete image to get ready for the next time
+                    Console.WriteLine("Sorting done");
+                    Thread.Sleep(6000);
+                    //Console.ReadLine();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
+                }
             }
         }
 
-        private static Color GetDominantColour(string inputFile, int k)
+        private static Color GetDominantColour(Image image, int k)
         {
-            using (Image image = Image.FromFile(inputFile))
+
+            Console.WriteLine("Starting GetDomCol");
+
+            Console.WriteLine("Before resizing");
+            const int maxResizedDimension = 200;
+            Size resizedSize; //Resizes the image to suitable size
+            if (image.Width > image.Height)
             {
-                const int maxResizedDimension = 200;
-                Size resizedSize; //Resizes the image to suitable size
-                if (image.Width > image.Height)
+                resizedSize = new Size(maxResizedDimension, (int)Math.Floor((image.Height / (image.Width * 1.0f)) * maxResizedDimension));
+            }
+            else
+            {
+                resizedSize = new Size((int)Math.Floor((image.Width / (image.Width * 1.0f)) * maxResizedDimension), maxResizedDimension);
+                //If height > width = 200px,200px
+            }
+            Console.WriteLine("Resize done");
+            using (Bitmap resizedBitMapImage = new Bitmap(image, resizedSize)) /*making it a bitmap*/
+            {
+                //The amount the list can hold is equal to the picture's squaremeters.
+                List<Color> colors = new List<Color>(resizedBitMapImage.Width * resizedBitMapImage.Height);
+                for (int x = 0; x < resizedBitMapImage.Width; x++)
                 {
-                    resizedSize = new Size(maxResizedDimension, (int)Math.Floor((image.Height / (image.Width * 1.0f)) * maxResizedDimension));
-                }
-                else
-                {
-                    resizedSize = new Size((int)Math.Floor((image.Width / (image.Width * 1.0f)) * maxResizedDimension), maxResizedDimension);
-                    //If height > width = 200px,200px
-                }
-
-                using (Bitmap resizedBitMapImage = new Bitmap(image, resizedSize)) /*making it a bitmap*/
-                {
-                    //The amount the list can hold is equal to the picture's squaremeters.
-                    List<Color> colors = new List<Color>(resizedBitMapImage.Width * resizedBitMapImage.Height);
-                    for (int x = 0; x < resizedBitMapImage.Width; x++)
+                    for (int y = 0; y < resizedBitMapImage.Height; y++)
                     {
-                        for (int y = 0; y < resizedBitMapImage.Height; y++)
-                        {
-                            colors.Add(resizedBitMapImage.GetPixel(x, y));
-                        }
+                        colors.Add(resizedBitMapImage.GetPixel(x, y));
                     }
-
-                    KMeansClusteringCalculator clustering = new KMeansClusteringCalculator(); //Makes a KMC instance, so we can get calculate()
-                    IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d); //Math starts here / Check it out!
-
-                    //You will end up with a numbre of _colours lists depending on the numbers of K
-                    //_colour contains all the colour that were determined to be closest to the cluster
-                    //_colours calculate the new center for that cluster
-
-                    //Writes to Console
-                    //? DO WE NEED THIS?
-                    //Console.WriteLine("Dominant colours for {0}:", inputFile);
-                    //? AND THIS?
-                    //foreach (Color color in dominantColours)
-                    //{
-                    //    Console.WriteLine("K: {0} (#{1:x2}{2:x2}{3:x2})", color, color.R, color.G, color.B);
-                    //}
-                    //! NOT REALLY NEEDED
-                    //Make a bar for the most dominant colors beneath the image
-                    //const int swatchHeight = 20;
-                    //using (Bitmap bmp = new Bitmap(resizedBitMapImage.Width, resizedBitMapImage.Height + swatchHeight))
-                    //{
-                    //    using (Graphics gfx = Graphics.FromImage(bmp))
-                    //    {
-                    //        gfx.DrawImage(resizedBitMapImage, new Rectangle(0, 0, resizedBitMapImage.Width, resizedBitMapImage.Height));
-
-                    //        //makes a block of each dominant color, based on K amount
-                    //        int swatchWidth = (int)Math.Floor(bmp.Width / (k * 1.0f));
-                    //        for (int i = 0; i < k; i++)
-                    //        {
-                    //            using (SolidBrush brush = new SolidBrush(dominantColours[i]))
-                    //            {
-                    //                gfx.FillRectangle(brush, new Rectangle(i * swatchWidth, resizedBitMapImage.Height, swatchWidth, swatchHeight));
-                    //            }
-                    //        }
-                    //    }
-                    //    string outputFile = string.Format("{0}.output.png", Path.GetFileNameWithoutExtension(inputFile));
-                    //    bmp.Save(outputFile, ImageFormat.Png);
-                    //    Console.WriteLine("We made it to goal 1");
-                    //    Console.ReadLine();
-                    //    Process.Start("explorer.exe", outputFile); //opens the newly created picture
-
-                    return dominantColours[0]; //! THIS IS NO LONGER BS!
                 }
+                Console.WriteLine("Beginning clustercalc");
+                KMeansClusteringCalculator clustering = new KMeansClusteringCalculator(); //Makes a KMC instance, so we can get calculate()
+                IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d); //Math starts here / Check it out!
+
+                //You will end up with a numbre of _colours lists depending on the numbers of K
+                //_colour contains all the colour that were determined to be closest to the cluster
+                //_colours calculate the new center for that cluster
+
+                //Writes to Console
+                //? DO WE NEED THIS?
+                //Console.WriteLine("Dominant colours for {0}:", inputFile);
+                //? AND THIS?
+                //foreach (Color color in dominantColours)
+                //{
+                //    Console.WriteLine("K: {0} (#{1:x2}{2:x2}{3:x2})", color, color.R, color.G, color.B);
+                //}
+                //! NOT REALLY NEEDED
+                //Make a bar for the most dominant colors beneath the image
+                //const int swatchHeight = 20;
+                //using (Bitmap bmp = new Bitmap(resizedBitMapImage.Width, resizedBitMapImage.Height + swatchHeight))
+                //{
+                //    using (Graphics gfx = Graphics.FromImage(bmp))
+                //    {
+                //        gfx.DrawImage(resizedBitMapImage, new Rectangle(0, 0, resizedBitMapImage.Width, resizedBitMapImage.Height));
+
+                //        //makes a block of each dominant color, based on K amount
+                //        int swatchWidth = (int)Math.Floor(bmp.Width / (k * 1.0f));
+                //        for (int i = 0; i < k; i++)
+                //        {
+                //            using (SolidBrush brush = new SolidBrush(dominantColours[i]))
+                //            {
+                //                gfx.FillRectangle(brush, new Rectangle(i * swatchWidth, resizedBitMapImage.Height, swatchWidth, swatchHeight));
+                //            }
+                //        }
+                //    }
+                //    string outputFile = string.Format("{0}.output.png", Path.GetFileNameWithoutExtension(inputFile));
+                //    bmp.Save(outputFile, ImageFormat.Png);
+                //    Console.WriteLine("We made it to goal 1");
+                //    Console.ReadLine();
+                //    Process.Start("explorer.exe", outputFile); //opens the newly created picture
+                Console.WriteLine("Task 1 complete, GetDominantColor()");
+                Console.WriteLine(dominantColours[0]);
+                return dominantColours[0]; //! THIS IS NO LONGER BS!
             }
         }
     }
 }
+
 
 #region mydumbattempt
 //    try

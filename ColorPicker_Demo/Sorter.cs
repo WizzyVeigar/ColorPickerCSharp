@@ -16,49 +16,50 @@ namespace ColorPicker_Demo
         //x MAYBE NEW PICTURES
         //x BROWN NEEDS FIXING, BROWN PICS ARE RED
 
-        string colorLib = "..\\..\\ColorLib\\";
+        static string colorLib = @"/home/pi/images/ColorLib";
 
-        private List<Color> redList = new List<Color>();
-        public List<Color> RedList
+        private static List<Color> redList = new List<Color>();
+        public static List<Color> RedList
         {
             get { return redList; }
             set { redList = value; }
         }
 
-        private List<Color> orangeList = new List<Color>();
-        public List<Color> OrangeList
+        private static List<Color> orangeList = new List<Color>();
+        public static List<Color> OrangeList
         {
             get { return orangeList; }
             set { orangeList = value; }
         }
 
-        private List<Color> yellowList = new List<Color>();
-        public List<Color> YellowList
+        private static List<Color> yellowList = new List<Color>();
+        public static List<Color> YellowList
         {
             get { return yellowList; }
             set { yellowList = value; }
         }
 
-        private List<Color> greenList = new List<Color>();
-        public List<Color> GreenList
+        private static List<Color> greenList = new List<Color>();
+        public static List<Color> GreenList
         {
             get { return greenList; }
             set { greenList = value; }
         }
 
-        private List<Color> blueList = new List<Color>();
-        public List<Color> BlueList
+        private static List<Color> blueList = new List<Color>();
+        public static List<Color> BlueList
         {
             get { return blueList; }
             set { blueList = value; }
         }
 
-        private List<Color> brownList = new List<Color>();
-        public List<Color> BrownList
+        private static List<Color> brownList = new List<Color>();
+        public static List<Color> BrownList
         {
             get { return brownList; }
             set { brownList = value; }
         }
+        public string theCOLOR;
 
         int ColorDiff(Color c1, Color c2) //+ COULD POSSIBLY BE ERASED AND USE EuclideanDistance() FROM KCluster.cs INSTEAD!!!!
         {
@@ -89,42 +90,50 @@ namespace ColorPicker_Demo
         {
             Color closestColor = Color.FromArgb(newList[ClosestColorTo(newList, compareColor)].ToArgb());
 
+            Console.WriteLine("Task 2 complete, FinalClosestColor");
             return closestColor;
         }
         string FindListName(Color closestColor) //LOOK AT NAME
         {
             if (RedList.Contains(closestColor))
             {
+                theCOLOR = "Red";
                 return "Red";
             }
             if (OrangeList.Contains(closestColor))
             {
+                theCOLOR = "Orange";
                 return "Orange";
             }
             if (YellowList.Contains(closestColor))
             {
+                theCOLOR = "Yellow";
                 return "Yellow";
             }
             if (GreenList.Contains(closestColor))
             {
+                theCOLOR = "Green";
                 return "Green";
             }
             if (BlueList.Contains(closestColor))
             {
+                theCOLOR = "Blue";
                 return "Blue";
             }
             if (BrownList.Contains(closestColor))
             {
+                theCOLOR = "Brown";
                 return "Brown";
             }
             return null;
         }
-        public void MakeLists() //MAKES OUR LISTS CONTAINING OUR KNOW COLORS
+        public static void MakeLists() //MAKES OUR LISTS CONTAINING OUR KNOW COLORS
         {
             if (Directory.Exists(colorLib) == true)
             {
                 foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(colorLib), "*.*", SearchOption.AllDirectories))
                 {
+                    Console.WriteLine("Found da lib :P");
                     if (file.Contains("red"))
                     {
                         AddPixelColor(redList, file);
@@ -152,7 +161,7 @@ namespace ColorPicker_Demo
                 }
             }
         }
-        public void AddPixelColor(List<Color> list, string file)
+        public static void AddPixelColor(List<Color> list, string file)
         {
             Bitmap bitmap = new Bitmap(file);
 
