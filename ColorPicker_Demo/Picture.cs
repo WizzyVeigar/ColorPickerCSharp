@@ -135,16 +135,24 @@ namespace ColorPicker_Demo
             {
                 try
                 {
-                    Console.WriteLine("Found Image");
-                    foundImage = true;
+                    if (File.Exists(Path))
+                    {
+                        Console.WriteLine("Found Image");
+                        foundImage = true;
+                    }
+                    else
+                    {
+                        Thread.Sleep(3000);
+                    }
+
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Thread.Sleep(3000);
+                    Console.WriteLine(e);
                 }
             }
             // Delete image to get ready for the next time
-            File.Delete(path);
+            File.Delete(Path);
             return Path;
         }
 
