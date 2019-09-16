@@ -64,6 +64,7 @@ namespace ColorPicker_Demo
                 input = Console.ReadLine().ToLower();
                 if (input == "r")
                 {
+                    Messenger.OpenPort();
                     while (true)
                     {
                         Thread sortingProcessThread = new Thread(SortingProcess);
