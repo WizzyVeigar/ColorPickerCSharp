@@ -132,7 +132,6 @@ namespace ColorPicker_Demo
                 try
                 {
                     Console.WriteLine("Sorting....");
-                    Console.WriteLine(pic.Path);
                     Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.image, k))); //x NEEDS FIXING!!
                     Console.WriteLine(pic.sorter.theCOLOR);
                     File.Delete(pic.Path);// Delete image to get ready for the next time

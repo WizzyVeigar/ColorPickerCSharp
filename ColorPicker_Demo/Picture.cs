@@ -150,7 +150,6 @@ namespace ColorPicker_Demo
                     Thread.Sleep(6000);
                 }
             }
-
             return image;
         }
 
