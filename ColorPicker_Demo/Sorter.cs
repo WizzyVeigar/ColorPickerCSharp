@@ -83,15 +83,10 @@ namespace ColorPicker_Demo
             closestColors.Add(Color.FromArgb(BlueList[ClosestColorTo(BlueList, compareColor)].ToArgb()));
             closestColors.Add(Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb()));
 
-            return FindListName(FinalClosestColor(closestColors, compareColor));
+            return FindListName(closestColors[ClosestColorTo(closestColors, compareColor)]);
         }
 
-        Color FinalClosestColor(List<Color> newList, Color compareColor) //GETS THE CLOSEST COLOR FROM OUR CLOSEST COLORS
-        {
-            Color closestColor = Color.FromArgb(newList[ClosestColorTo(newList, compareColor)].ToArgb());
-
-              return closestColor;
-        }
+       
         string FindListName(Color closestColor) //LOOK AT NAME
         {
             if (RedList.Contains(closestColor))
