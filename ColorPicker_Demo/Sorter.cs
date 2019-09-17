@@ -67,7 +67,7 @@ namespace ColorPicker_Demo
                                    + (c1.G - c2.G) * (c1.G - c2.G)
                                    + (c1.B - c2.B) * (c1.B - c2.B));
         }
-        public int ClosestColorTo(List<Color> colors, Color target) //THIS IS THE METHOD THAT CALCULATES THE CLOSEST COLOR
+        public int ClosestColorTo(List<Color> colors, Color target) //THIS IS THE METHOD THAT CALCULATES THE CLOSEST COLOR AND RETURNS THE INDEX OF THAT COLOR
         {
             int colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
             return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
