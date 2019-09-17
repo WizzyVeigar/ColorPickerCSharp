@@ -74,7 +74,7 @@ namespace ColorPicker_Demo
         }
 
         public string ClosestColors(Color compareColor) //GETS THE CLOSEST COLOR FROM EACH COLOR LIST. THEN GETS THE CLOSEST COLOR FROM THOSE COLORS AND RETURNS THE NAME OF THE COLOR LIST
-        {
+        { 
             List<Color> closestColors = new List<Color>
             {
                 Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()),
@@ -85,41 +85,32 @@ namespace ColorPicker_Demo
                 Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb())
             };
 
-            return FindListName(closestColors[ClosestColorTo(closestColors, compareColor)]);
+            return FindListName(ClosestColorTo(closestColors, compareColor));
         }
 
        
-        string FindListName(Color closestColor) //LOOK AT NAME
+        string FindListName(int indexOfCC) //LOOK AT NAME
         {
-            if (RedList.Contains(closestColor))
+            switch (indexOfCC)
             {
-                theCOLOR = "Red";
-                return "Red";
-            }
-            if (OrangeList.Contains(closestColor))
-            {
-                theCOLOR = "Orange";
-                return "Orange";
-            }
-            if (YellowList.Contains(closestColor))
-            {
-                theCOLOR = "Yellow";
-                return "Yellow";
-            }
-            if (GreenList.Contains(closestColor))
-            {
-                theCOLOR = "Green";
-                return "Green";
-            }
-            if (BlueList.Contains(closestColor))
-            {
-                theCOLOR = "Blue";
-                return "Blue";
-            }
-            if (BrownList.Contains(closestColor))
-            {
-                theCOLOR = "Brown";
-                return "Brown";
+                case 0:
+                    theCOLOR = "Red";
+                    return "Red";
+                case 1:
+                    theCOLOR = "Orange";
+                    return "Orange";
+                case 2:
+                    theCOLOR = "Yellow";
+                    return "Yellow";
+                case 3:
+                    theCOLOR = "Green";
+                    return "Green";
+                case 4:
+                    theCOLOR = "Blue";
+                    return "Blue";
+                case 5:
+                    theCOLOR = "Brown";
+                    return "Brown";
             }
             return null;
         }
