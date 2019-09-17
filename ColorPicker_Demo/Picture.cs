@@ -38,15 +38,17 @@ namespace ColorPicker_Demo
             get { return pictureTaken; }
             set { pictureTaken = value; }
         }
-
+        public Image image;
 
         public Picture()
         {
             TakePicture();
         }
 
-        public string TakePicture() //Takes the actual picture
+
+        public Image TakePicture() //Takes the actual picture
         {
+            
             try
             {
                 ProcessStartInfo start = new ProcessStartInfo();
@@ -135,17 +137,20 @@ namespace ColorPicker_Demo
             {
                 try
                 {
-                    Console.WriteLine("Found Image");
-                    foundImage = true;
+                    if (File.Exists(Path))
+                    {
+                        image = Image.FromFile(Path);
+                        Console.WriteLine("Found Image");
+                        foundImage = true;
+                    }
                 }
                 catch (Exception)
                 {
-                    Thread.Sleep(3000);
+                    Console.WriteLine("Waiting on picture");
+                    Thread.Sleep(6000);
                 }
             }
-            // Delete image to get ready for the next time
-            File.Delete(path);
-            return Path;
+            return image;
         }
 
         //! PRETTY SURE WE DON'T NEED THIS

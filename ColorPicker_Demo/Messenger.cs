@@ -12,20 +12,21 @@ namespace ColorPicker_Demo
     {
         static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
 
+        public static void OpenPort()
+        {
+            seriPort.Open();
+        }
+
         public static string StartProcess() //STARTS THE ARM!
         {
             while (true)
             {
-                seriPort.Close(); //! MAYBE NEEDS TO BE MOVED TO THE BOTTOM
-                seriPort.Open();
                 string a = seriPort.ReadExisting();
 
                 if (a.Trim().Contains("h"))
                 {
-                    seriPort.Close();
                     return "h";
                 }
-                return "";
             }
         }
 
@@ -33,16 +34,12 @@ namespace ColorPicker_Demo
         {
             while (true)
             {
-                seriPort.Close(); //! MAYBE NEEDS TO BE MOVED TO THE BOTTOM
-                seriPort.Open();
                 string a = seriPort.ReadExisting();
 
                 if (a.Contains("t"))
                 {
-                    seriPort.Close();
                     return "t";
                 }
-                return "";
             }
         }
 
@@ -51,7 +48,6 @@ namespace ColorPicker_Demo
             if (seriPort.IsOpen == true)
             {
                 seriPort.Write("s");
-                seriPort.Close();
             }
         }
 
@@ -60,45 +56,32 @@ namespace ColorPicker_Demo
             if (seriPort.IsOpen == true)
             {
                 seriPort.Write("r");
-                seriPort.Close();
             }
         }
 
         public static void SendToArm(string theCOLOR) //SENDS THE COLOR TO THE ARM
         {
-            if (!seriPort.IsOpen == true)
+            if (seriPort.IsOpen == true)
             {
                 switch (theCOLOR)
                 {
                     case "Red":
-                        seriPort.Open();
                         seriPort.Write("a");
-                        seriPort.Close();
                         break;
                     case "Orange":
-                        seriPort.Open();
                         seriPort.Write("b");
-                        seriPort.Close();
                         break;
                     case "Yellow":
-                        seriPort.Open();
                         seriPort.Write("c");
-                        seriPort.Close();
                         break;
                     case "Green":
-                        seriPort.Open();
                         seriPort.Write("d");
-                        seriPort.Close();
                         break;
                     case "Blue":
-                        seriPort.Open();
                         seriPort.Write("e");
-                        seriPort.Close();
                         break;
                     case "Brown":
-                        seriPort.Open();
                         seriPort.Write("f");
-                        seriPort.Close();
                         break;
                     default:
                         break;
