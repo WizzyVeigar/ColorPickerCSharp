@@ -93,7 +93,6 @@ namespace ColorPicker_Demo
 
                 if (input == "w")
                 {
-                    Sorter.MakeLists();
                     if (Directory.Exists(inputArg) == true)
                     {
                         for (int i = 1; i < 51; i++)
