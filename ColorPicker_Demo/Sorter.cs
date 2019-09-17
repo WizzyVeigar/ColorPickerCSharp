@@ -17,6 +17,7 @@ namespace ColorPicker_Demo
         //x BROWN NEEDS FIXING, BROWN PICS ARE RED
 
         static readonly string colorLib = @"/home/pi/images/ColorLib";
+        public string theCOLOR;
 
         private static List<Color> redList = new List<Color>();
         public static List<Color> RedList
@@ -59,7 +60,7 @@ namespace ColorPicker_Demo
             get { return brownList; }
             set { brownList = value; }
         }
-        public string theCOLOR;
+        
 
         int ColorDiff(Color c1, Color c2) //+ COULD POSSIBLY BE ERASED AND USE EuclideanDistance() FROM KCluster.cs INSTEAD!!!!
         {
