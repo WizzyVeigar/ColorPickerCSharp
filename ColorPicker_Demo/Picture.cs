@@ -51,15 +51,16 @@ namespace ColorPicker_Demo
             
             try
             {
-                ProcessStartInfo start = new ProcessStartInfo();
-                // File is the the python install folder
-                start.FileName = @"/usr/bin/python3";
+                ProcessStartInfo start = new ProcessStartInfo
+                {
+                    // File is the the python install folder
+                    FileName = @"/usr/bin/python3",
+                    // File where our python script is
+                    Arguments = @"/home/pi/images/cameraPicture.py",
 
-                // File where our python script is
-                start.Arguments = @"/home/pi/images/cameraPicture.py";
-
-                start.UseShellExecute = false;
-                start.RedirectStandardOutput = false;
+                    UseShellExecute = false,
+                    RedirectStandardOutput = false
+                };
 
                 Console.WriteLine("Starting Process");
                 Process process = Process.Start(start);

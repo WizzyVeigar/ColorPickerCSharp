@@ -16,7 +16,7 @@ namespace ColorPicker_Demo
         //x MAYBE NEW PICTURES
         //x BROWN NEEDS FIXING, BROWN PICS ARE RED
 
-        static string colorLib = @"/home/pi/images/ColorLib";
+        static readonly string colorLib = @"/home/pi/images/ColorLib";
 
         private static List<Color> redList = new List<Color>();
         public static List<Color> RedList
@@ -75,13 +75,15 @@ namespace ColorPicker_Demo
 
         public string ClosestColors(Color compareColor) //GETS THE CLOSEST COLOR FROM EACH COLOR LIST. THEN GETS THE CLOSEST COLOR FROM THOSE COLORS AND RETURNS THE NAME OF THE COLOR LIST
         {
-            List<Color> closestColors = new List<Color>();
-            closestColors.Add(Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()));
-            closestColors.Add(Color.FromArgb(OrangeList[ClosestColorTo(OrangeList, compareColor)].ToArgb()));
-            closestColors.Add(Color.FromArgb(YellowList[ClosestColorTo(YellowList, compareColor)].ToArgb()));
-            closestColors.Add(Color.FromArgb(GreenList[ClosestColorTo(GreenList, compareColor)].ToArgb()));
-            closestColors.Add(Color.FromArgb(BlueList[ClosestColorTo(BlueList, compareColor)].ToArgb()));
-            closestColors.Add(Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb()));
+            List<Color> closestColors = new List<Color>
+            {
+                Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()),
+                Color.FromArgb(OrangeList[ClosestColorTo(OrangeList, compareColor)].ToArgb()),
+                Color.FromArgb(YellowList[ClosestColorTo(YellowList, compareColor)].ToArgb()),
+                Color.FromArgb(GreenList[ClosestColorTo(GreenList, compareColor)].ToArgb()),
+                Color.FromArgb(BlueList[ClosestColorTo(BlueList, compareColor)].ToArgb()),
+                Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb())
+            };
 
             return FindListName(closestColors[ClosestColorTo(closestColors, compareColor)]);
         }

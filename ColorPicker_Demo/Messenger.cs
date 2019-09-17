@@ -17,7 +17,7 @@ namespace ColorPicker_Demo
             seriPort.Open();
         }
 
-        public static string StartProcess() //STARTS THE ARM!
+        public static string StartProcess() //STARTS THE COLOR SORTING PROCESS
         {
             while (true)
             {
@@ -82,8 +82,6 @@ namespace ColorPicker_Demo
                         break;
                     case "Brown":
                         seriPort.Write("f");
-                        break;
-                    default:
                         break;
                 }
             }
