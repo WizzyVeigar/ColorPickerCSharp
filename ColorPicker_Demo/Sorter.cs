@@ -61,7 +61,7 @@ namespace ColorPicker_Demo
             set { brownList = value; }
         }
         
-
+        
         int ColorDiff(Color c1, Color c2) //+ COULD POSSIBLY BE ERASED AND USE EuclideanDistance() FROM KCluster.cs INSTEAD!!!!
         {
             return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
@@ -73,7 +73,12 @@ namespace ColorPicker_Demo
             int colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
             return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
         }
-
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="compareColor"></param>
+        /// 
+        /// <returns></returns>
         public string ClosestColors(Color compareColor) //GETS THE CLOSEST COLOR FROM EACH COLOR LIST. THEN GETS THE CLOSEST COLOR FROM THOSE COLORS AND RETURNS THE NAME OF THE COLOR LIST
         { 
             List<Color> closestColors = new List<Color>
