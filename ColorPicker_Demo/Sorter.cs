@@ -7,15 +7,7 @@ using System.IO;
 namespace ColorPicker_Demo
 {
     public class Sorter
-    {
-        //x MAKE LISTS FOR THE REMAINING COLORS
-        //x TAKE PICTURES OF REMAINING M&M
-        //x CUT THOSE PICTURES
-        //x ADD LISTS TO ClosestColors()
-        //x SEE IF THE IFS IN MakeList() CAN BE MADE INTO METHOD
-        //x MAYBE NEW PICTURES
-        //x BROWN NEEDS FIXING, BROWN PICS ARE RED
-
+    {       
         static readonly string colorLib = @"/home/pi/images/ColorLib";
         public string theCOLOR;
 
@@ -67,7 +59,7 @@ namespace ColorPicker_Demo
         /// <param name="c1"></param>
         /// <param name="c2"></param>
         /// <returns>Returns how close the two colors are related as an int</returns>
-        int ColorDiff(Color c1, Color c2) // COULD POSSIBLY BE ERASED AND USE EuclideanDistance() FROM KCluster.cs INSTEAD!!!!
+        int ColorDiff(Color c1, Color c2)
         {
             return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
                                    + (c1.G - c2.G) * (c1.G - c2.G)
@@ -79,7 +71,7 @@ namespace ColorPicker_Demo
         /// <param name="colors"></param>
         /// <param name="target"></param>
         /// <returns>Returns the index of the color that is closest to the <paramref name="target"/>, from <paramref name="colors"/></returns>
-        public int ClosestColorTo(List<Color> colors, Color target) //THIS IS THE METHOD THAT CALCULATES THE CLOSEST COLOR
+        public int ClosestColorTo(List<Color> colors, Color target)
         {
             int colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
             return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);

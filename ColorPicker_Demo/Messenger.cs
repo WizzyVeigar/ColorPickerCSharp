@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 
 namespace ColorPicker_Demo
 {
-    //x NEEDS A START ARM METHOD
     static class Messenger
     {
         static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
@@ -17,7 +11,8 @@ namespace ColorPicker_Demo
             seriPort.Open();
         }
 
-        public static string StartProcess() //STARTS THE COLOR SORTING PROCESS
+        //STARTS THE COLOR SORTING PROCESS
+        public static string StartProcess() 
         {
             while (true)
             {
@@ -30,7 +25,8 @@ namespace ColorPicker_Demo
             }
         }
 
-        public static string StopProcess() //STOPS THE ARM
+        //STOPS THE ARM
+        public static string StopProcess() 
         {
             while (true)
             {
@@ -43,7 +39,8 @@ namespace ColorPicker_Demo
             }
         }
 
-        public static void StartArm() //STARTS THE ARM
+        //STARTS THE ARM
+        public static void StartArm() 
         {
             if (seriPort.IsOpen == true)
             {
@@ -51,7 +48,8 @@ namespace ColorPicker_Demo
             }
         }
 
-        public static void RestartArm() //RESETS THE ARM
+        //RESETS THE ARM
+        public static void RestartArm() 
         {
             if (seriPort.IsOpen == true)
             {
@@ -59,7 +57,8 @@ namespace ColorPicker_Demo
             }
         }
 
-        public static void SendToArm(string theCOLOR) //SENDS THE COLOR TO THE ARM
+        //SENDS THE COLOR TO THE ARM
+        public static void SendToArm(string theCOLOR) 
         {
             if (seriPort.IsOpen == true)
             {

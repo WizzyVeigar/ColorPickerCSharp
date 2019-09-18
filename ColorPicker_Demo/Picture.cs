@@ -1,8 +1,6 @@
 ﻿using System.Drawing;
-using Microsoft.Scripting.Hosting;
 using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
@@ -19,18 +17,18 @@ using System.Threading;
 
 namespace ColorPicker_Demo
 {
-    //x CHANGES TO RETURN TYPE
-    //x MAYBE REMOVE IRONPYTHON? WE DON'T USE IT
     public class Picture
     {
         public Sorter sorter = new Sorter();
-        private string path;
+
+        // Path to image that python created
+        private readonly string path = @"/home/pi/images/newImage.png";
 
         public string Path
         {
-            get { return path; }
-            set { path = value; }
+            get { return path; }            
         }
+
         private Image pictureTaken;
 
         public Image PictureTaken
@@ -38,7 +36,6 @@ namespace ColorPicker_Demo
             get { return pictureTaken; }
             set { pictureTaken = value; }
         }
-        public Image image;
 
         public Picture()
         {
@@ -46,9 +43,9 @@ namespace ColorPicker_Demo
         }
 
 
-        public Image TakePicture() //Takes the actual picture
-        {
-            
+        //Takes the actual picture
+        public Image TakePicture() 
+        {            
             try
             {
                 ProcessStartInfo start = new ProcessStartInfo
@@ -69,69 +66,6 @@ namespace ColorPicker_Demo
             {
                 Console.WriteLine(e.Message);
             }
-            #region IronPython
-            //ScriptEngine engine = Python.CreateEngine();
-            //try
-            //{
-            //    using (Process myProcess = new Process())
-            //    {
-            //        myProcess.StartInfo.UseShellExecute = false;
-            //        // You can start any process, HelloWorld is a do-nothing example.
-            //        myProcess.StartInfo.FileName = @"/home/pi/images/cameraPicture.py";
-            //        myProcess.StartInfo.CreateNoWindow = true;
-            //        Console.WriteLine("Starting python code");
-            //        myProcess.Start();
-            //        // This code assumes the process you are starting will terminate itself. 
-            //        // Given that is is started without a window so you cannot terminate it 
-            //        // on the desktop, it must terminate itself or you can do it programmatically
-            //        // from this application using the Kill method.
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //    Console.WriteLine(e);
-            //}
-            #endregion
-            #region The good code
-
-            //try
-            //{
-            //    Console.WriteLine("Starting python script");
-
-            //    ICollection<string> Paths = engine.GetSearchPaths();
-            //    Paths.Add(@"/usr/lib/python2.7/dist-packages/");
-            //    //Paths.Add(@"/usr/lib/python2.7/dist-packages/picamera");
-            //    //Paths.Add(@"/usr/lib/python2.7/dist-packages/picamera");
-            //    //Paths.Add(@"/usr/lib/python2.7");
-            //    //Paths.Add(@"/usr/lib/python3/dist-packages/picamera/__pycache__");
-            //    Paths.Add(AppDomain.CurrentDomain.BaseDirectory + @"IronPython.2.7.9\lib");
-            //    Paths.Add(AppDomain.CurrentDomain.BaseDirectory + @"IronPython.2.7.9");
-            //    Paths.Add(AppDomain.CurrentDomain.BaseDirectory + @"IronPython.27\lib");
-            //    Paths.Add(AppDomain.CurrentDomain.BaseDirectory + @"IronPython.27");
-
-            //    Paths.Add(@"C:\Users\Kenn5073\source\repos\ColorPicker_Demo\packages\IronPython.2.7.9\lib");
-            //    Paths.Add(@"IronPython.2.7.9/lib");
-            //    Paths.Add(@"/usr/lib/python2.7/__future__.py");
-            //    Paths.Add(@"/usr/lib/python2.7/__future__.pyc");
-
-            //    Paths.Add(@"/home/pi/Desktop/IronPython2.7.9");
-
-            //    engine.SetSearchPaths(Paths);
-            //    Console.WriteLine("Before exec python");
-            //    engine.ExecuteFile(@"/home/pi/images/cameraPicture.py");
-            //    Console.WriteLine("file executed");
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //    Console.WriteLine(e);
-            //}
-            #endregion
-
-            // Path to image that python created
-            Path = @"/home/pi/images/newImage.png";
-            //Bitmap bigBoiImage = null;
 
             bool foundImage = false;
             while (foundImage == false)
@@ -140,7 +74,7 @@ namespace ColorPicker_Demo
                 {
                     if (File.Exists(Path))
                     {
-                        image = Image.FromFile(Path);
+                        PictureTaken = Image.FromFile(Path);
                         Console.WriteLine("Found Image");
                         foundImage = true;
                     }
@@ -151,7 +85,7 @@ namespace ColorPicker_Demo
                     Thread.Sleep(6000);
                 }
             }
-            return image;
+            return PictureTaken;
         }
 
         //! PRETTY SURE WE DON'T NEED THIS

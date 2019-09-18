@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Threading;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 #region pils
 //                            |.
@@ -42,10 +37,6 @@ namespace ColorPicker_Demo
 {
     class Program
     {
-        //x MAKE STOP BUTTON
-        //x IMPLEMENT STOP BUTTON
-        //x CLEAN UP CODE + SEE IF ANY COMMENTS ARE NEEDED/MISSING
-
         const int k = 3;
         static void Main(string[] args)
         {
@@ -55,8 +46,6 @@ namespace ColorPicker_Demo
             //Looks for the sample folder in all directories 
             Console.WriteLine("Version 8.5.KMC");
             Console.Title = "R2.0 SSSorter";
-            //Console.WriteLine("Please wait a moment...");
-            //Console.Clear();
             Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
             string input = Console.ReadLine().ToLower();
             if (input == "start" || input == "sort" || input == "s")
@@ -72,7 +61,6 @@ namespace ColorPicker_Demo
 
                         Console.WriteLine("Press button to start");
                         input = Messenger.StartProcess();
-                        //Console.Clear();
                         if (input == "h")
                         {
                             sortingProcessThread.Start();
@@ -131,12 +119,12 @@ namespace ColorPicker_Demo
                 try
                 {
                     Console.WriteLine("Sorting....");
-                    Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.image, k))); //x NEEDS FIXING!!
+                    Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.PictureTaken, k))); //x NEEDS FIXING!!
                     Console.WriteLine(pic.sorter.theCOLOR);
-                    File.Delete(pic.Path);// Delete image to get ready for the next time
+                    // Delete image to get ready for the next time
+                    File.Delete(pic.Path);
                     Console.WriteLine("Sorting done");
                     Thread.Sleep(6000);
-                    //Console.ReadLine();
                 }
                 catch (Exception e)
                 {
@@ -149,18 +137,20 @@ namespace ColorPicker_Demo
         private static Color GetDominantColour(Image image, int k)
         {
             const int maxResizedDimension = 200;
-            Size resizedSize; //Resizes the image to suitable size
+            //Resizes the image to suitable size
+            Size resizedSize; 
             if (image.Width > image.Height)
             {
                 resizedSize = new Size(maxResizedDimension, (int)Math.Floor((image.Height / (image.Width * 1.0f)) * maxResizedDimension));
             }
             else
             {
-                resizedSize = new Size((int)Math.Floor((image.Width / (image.Width * 1.0f)) * maxResizedDimension), maxResizedDimension);
                 //If height > width = 200px,200px
+                resizedSize = new Size((int)Math.Floor((image.Width / (image.Width * 1.0f)) * maxResizedDimension), maxResizedDimension);
             }
 
-            using (Bitmap resizedBitMapImage = new Bitmap(image, resizedSize)) /*making it a bitmap*/
+            //making it a bitmap
+            using (Bitmap resizedBitMapImage = new Bitmap(image, resizedSize)) 
             {
                 //The amount the list can hold is equal to the picture's squaremeters.
                 List<Color> colors = new List<Color>(resizedBitMapImage.Width * resizedBitMapImage.Height);
@@ -171,8 +161,10 @@ namespace ColorPicker_Demo
                         colors.Add(resizedBitMapImage.GetPixel(x, y));
                     }
                 }
-                KMeansClusteringCalculator clustering = new KMeansClusteringCalculator(); //Makes a KMC instance, so we can get calculate()
-                IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d); //Math starts here / Check it out!
+                //Makes a KMC instance, so we can get calculate()
+                KMeansClusteringCalculator clustering = new KMeansClusteringCalculator(); 
+                //Math starts here!
+                IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d); 
 
                 //You will end up with a numbre of _colours lists depending on the numbers of K
                 //_colour contains all the colour that were determined to be closest to the cluster
@@ -216,8 +208,6 @@ namespace ColorPicker_Demo
         }
     }
 }
-
-
 #region mydumbattempt
 //    try
 //    {
@@ -453,4 +443,3 @@ namespace ColorPicker_Demo
 ////    }
 ////}
 #endregion
-
