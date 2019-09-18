@@ -50,10 +50,9 @@ namespace ColorPicker_Demo
         static void Main(string[] args)
         {
             string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
-
+            //Looks for the sample folder in all directories 
             Sorter.MakeLists();
             Console.Clear();
-            //Looks for the sample folder in all directories 
             Console.WriteLine("Version 8.6.KMC");
             Console.Title = "R2.0 SSSorter";
             //Console.WriteLine("Please wait a moment...");
