@@ -40,11 +40,19 @@ namespace ColorPicker_Demo
         }
 
         //STARTS THE ARM
-        public static void StartArm() 
+        public static void CollectRight() 
         {
             if (seriPort.IsOpen == true)
             {
                 seriPort.Write("s");
+            }
+        }
+
+        public static void CollectLeft()
+        {
+            if (seriPort.IsOpen == true)
+            {
+                seriPort.Write("w");
             }
         }
 

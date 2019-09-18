@@ -37,6 +37,8 @@ namespace ColorPicker_Demo
 {
     class Program
     {
+        static Random rnd = new Random();
+        static int change;
         const int k = 3;
         static void Main(string[] args)
         {
@@ -113,7 +115,16 @@ namespace ColorPicker_Demo
         {
             while (true)
             {
-                Messenger.StartArm();
+                change = rnd.Next(0, 100);
+                if (change < 50)
+                {
+                    Messenger.CollectRight();
+                }
+                else
+                {
+                    Messenger.CollectLeft();
+                }
+                
                 Thread.Sleep(5000);
                 Picture pic = new Picture();
                 try
