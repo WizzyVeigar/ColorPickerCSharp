@@ -61,25 +61,35 @@ namespace ColorPicker_Demo
             set { brownList = value; }
         }
         
-        
-        int ColorDiff(Color c1, Color c2) //+ COULD POSSIBLY BE ERASED AND USE EuclideanDistance() FROM KCluster.cs INSTEAD!!!!
+        /// <summary>
+        /// Finds the difference between <paramref name="c1"/> and <paramref name="c2"/>
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns>Returns how close the two colors are related as an int</returns>
+        int ColorDiff(Color c1, Color c2) // COULD POSSIBLY BE ERASED AND USE EuclideanDistance() FROM KCluster.cs INSTEAD!!!!
         {
             return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
                                    + (c1.G - c2.G) * (c1.G - c2.G)
                                    + (c1.B - c2.B) * (c1.B - c2.B));
         }
+        /// <summary>
+        /// Finds the closest color in <paramref name="colors"/> compared to <paramref name="target"/>
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <param name="target"></param>
+        /// <returns>Returns the index of the color that is closest to the <paramref name="target"/>, from <paramref name="colors"/></returns>
         public int ClosestColorTo(List<Color> colors, Color target) //THIS IS THE METHOD THAT CALCULATES THE CLOSEST COLOR
         {
             int colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
             return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
         }
         /// <summary>
-        ///
+        /// Gets the closest color from each list and places them in closestColors 
         /// </summary>
         /// <param name="compareColor"></param>
-        /// 
-        /// <returns></returns>
-        public string ClosestColors(Color compareColor) //GETS THE CLOSEST COLOR FROM EACH COLOR LIST. THEN GETS THE CLOSEST COLOR FROM THOSE COLORS AND RETURNS THE NAME OF THE COLOR LIST
+        /// <returns>Returns the name of the color list</returns>
+        public string ClosestColors(Color compareColor) 
         { 
             List<Color> closestColors = new List<Color>
             {
@@ -91,11 +101,15 @@ namespace ColorPicker_Demo
                 Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb())
             };
 
-            return FindListName(ClosestColorTo(closestColors, compareColor));
+            return AssignToColor(ClosestColorTo(closestColors, compareColor));
         }
 
-       
-        string FindListName(int indexOfCC) //LOOK AT NAME
+        /// <summary>
+        /// Assigns what color <see cref="theCOLOR"/> belongs to
+        /// </summary>
+        /// <param name="indexOfCC"></param>
+        /// <returns>returns a string depending on <paramref name="indexOfCC"/></returns>
+        string AssignToColor(int indexOfCC)
         {
             switch (indexOfCC)
             {
@@ -120,7 +134,10 @@ namespace ColorPicker_Demo
             }
             return null;
         }
-        public static void MakeLists() //MAKES OUR LISTS CONTAINING OUR KNOW COLORS
+        /// <summary>
+        /// Loads the pixels of the pictures in colorLib, into their respective lists
+        /// </summary>
+        public static void MakeLists() 
         {
             if (Directory.Exists(colorLib) == true)
             {
