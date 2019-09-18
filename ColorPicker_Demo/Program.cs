@@ -130,12 +130,11 @@ namespace ColorPicker_Demo
                 try
                 {
                     Console.WriteLine("Sorting....");
-                    Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.PictureTaken, k))); //x NEEDS FIXING!!
+                    Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.PictureTaken, k)));
                     Console.WriteLine(pic.sorter.theCOLOR);
                     // Delete image to get ready for the next time
                     File.Delete(pic.Path);
                     Console.WriteLine("Sorting done");
-                    Thread.Sleep(6000);
                 }
                 catch (Exception e)
                 {
