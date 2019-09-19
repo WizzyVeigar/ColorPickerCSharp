@@ -85,6 +85,7 @@ namespace ColorPicker_Demo
                 {
                     if (Directory.Exists(inputArg) == true)
                     {
+                        Sorter sorter = new Sorter();
                         for (int i = 1; i < 51; i++)
                         {
                             Console.WriteLine("Test number {0}", i);
@@ -96,7 +97,8 @@ namespace ColorPicker_Demo
                             List<string> results = new List<string>();
                             foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
                             {
-                                //results.Add(sorter.ClosestColors(GetDominantColour(file, k)));
+                                Image image = Image.FromFile(file);
+                                results.Add(sorter.ClosestColors(GetDominantColour(image, k)));
                             }
                             if (!checkList.SequenceEqual(results))
                             {

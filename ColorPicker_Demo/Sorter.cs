@@ -8,7 +8,7 @@ namespace ColorPicker_Demo
 {
     public class Sorter
     {       
-        static readonly string colorLib = @"/home/pi/images/ColorLib";
+        static readonly string colorLib = "..\\..\\ColorLib\\";
         public string theCOLOR;
 
         private static List<Color> redList = new List<Color>();
