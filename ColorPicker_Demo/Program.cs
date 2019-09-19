@@ -37,8 +37,8 @@ namespace ColorPicker_Demo
 {
     class Program
     {
-        static Random rnd = new Random();
-        static int change;
+        
+        static bool change;
         const int k = 3;
         static void Main(string[] args)
         {
@@ -113,16 +113,18 @@ namespace ColorPicker_Demo
 
         public static void SortingProcess()
         {
+            change = true;
             while (true)
             {
-                change = rnd.Next(0, 100);
-                if (change < 50)
+                if (change == true)
                 {
                     Messenger.CollectRight();
+                    change = false;
                 }
                 else
                 {
                     Messenger.CollectLeft();
+                    change = true;
                 }
                 
                 Thread.Sleep(5000);
