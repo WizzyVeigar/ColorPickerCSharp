@@ -88,7 +88,6 @@ namespace ColorPicker_Demo
             return PictureTaken;
         }
 
-        //! PRETTY SURE WE DON'T NEED THIS
         //public Bitmap ResizeImage(Bitmap originImage)       
         //{
         //    Rectangle cloneRect = new Rectangle(0, 0, 200, 120);

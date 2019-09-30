@@ -33,11 +33,13 @@ using System.Linq;
 //                 "
 #endregion
 
+//CREDIT TO NANSYT AS CO-OWNER
+//https://github.com/NansyT
 namespace ColorPicker_Demo
 {
     class Program
     {
-        
+
         static bool change;
         const int k = 3;
         static void Main(string[] args)
@@ -128,7 +130,7 @@ namespace ColorPicker_Demo
                     Messenger.CollectLeft();
                     change = true;
                 }
-                
+
                 Thread.Sleep(5000);
                 Picture pic = new Picture();
                 try
@@ -152,7 +154,7 @@ namespace ColorPicker_Demo
         {
             const int maxResizedDimension = 200;
             //Resizes the image to suitable size
-            Size resizedSize; 
+            Size resizedSize;
             if (image.Width > image.Height)
             {
                 resizedSize = new Size(maxResizedDimension, (int)Math.Floor((image.Height / (image.Width * 1.0f)) * maxResizedDimension));
@@ -164,7 +166,7 @@ namespace ColorPicker_Demo
             }
 
             //making it a bitmap
-            using (Bitmap resizedBitMapImage = new Bitmap(image, resizedSize)) 
+            using (Bitmap resizedBitMapImage = new Bitmap(image, resizedSize))
             {
                 //The amount the list can hold is equal to the picture's squaremeters.
                 List<Color> colors = new List<Color>(resizedBitMapImage.Width * resizedBitMapImage.Height);
@@ -176,23 +178,20 @@ namespace ColorPicker_Demo
                     }
                 }
                 //Makes a KMC instance, so we can get calculate()
-                KMeansClusteringCalculator clustering = new KMeansClusteringCalculator(); 
+                KMeansClusteringCalculator clustering = new KMeansClusteringCalculator();
                 //Math starts here!
-                IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d); 
+                IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d);
 
                 //You will end up with a numbre of _colours lists depending on the numbers of K
                 //_colour contains all the colour that were determined to be closest to the cluster
                 //_colours calculate the new center for that cluster
 
                 //Writes to Console
-                //? DO WE NEED THIS?
                 //Console.WriteLine("Dominant colours for {0}:", inputFile);
-                //? AND THIS?
                 //foreach (Color color in dominantColours)
                 //{
                 //    Console.WriteLine("K: {0} (#{1:x2}{2:x2}{3:x2})", color, color.R, color.G, color.B);
                 //}
-                //! NOT REALLY NEEDED
                 //Make a bar for the most dominant colors beneath the image
                 //const int swatchHeight = 20;
                 //using (Bitmap bmp = new Bitmap(resizedBitMapImage.Width, resizedBitMapImage.Height + swatchHeight))

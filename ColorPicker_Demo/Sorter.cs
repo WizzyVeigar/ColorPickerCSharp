@@ -11,6 +11,7 @@ namespace ColorPicker_Demo
         static readonly string colorLib = @"/home/pi/images/ColorLib";
         public string theCOLOR;
 
+        //All lists contain the pixels of the ColorLib images, of which color they refer to
         private static List<Color> redList = new List<Color>();
         public static List<Color> RedList
         {
