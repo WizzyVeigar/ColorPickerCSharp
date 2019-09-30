@@ -37,8 +37,8 @@ namespace ColorPicker_Demo
 {
     class Program
     {
-        static Random rnd = new Random();
-        static int change;
+        
+        static bool change;
         const int k = 3;
         static void Main(string[] args)
         {
@@ -46,7 +46,7 @@ namespace ColorPicker_Demo
             //Looks for the sample folder in all directories 
             Sorter.MakeLists();
             Console.Clear();
-            Console.WriteLine("Version 8.7.KMC");
+            Console.WriteLine("Version 8.6.KMC");
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
             string input = Console.ReadLine().ToLower();
@@ -93,12 +93,12 @@ namespace ColorPicker_Demo
                             {
                                 "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
                             };
-                            
+
                             List<string> results = new List<string>();
                             foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
                             {
-                                Image picture = Image.FromFile(file);
-                                results.Add(sorter.ClosestColors(GetDominantColour(picture, k)));
+                                Image image = Image.FromFile(file);
+                                results.Add(sorter.ClosestColors(GetDominantColour(image, k)));
                             }
                             if (!checkList.SequenceEqual(results))
                             {
@@ -115,16 +115,18 @@ namespace ColorPicker_Demo
 
         public static void SortingProcess()
         {
+            change = true;
             while (true)
             {
-                change = rnd.Next(0, 100);
-                if (change < 50)
+                if (change == true)
                 {
                     Messenger.CollectRight();
+                    change = false;
                 }
                 else
                 {
                     Messenger.CollectLeft();
+                    change = true;
                 }
                 
                 Thread.Sleep(5000);
@@ -132,12 +134,11 @@ namespace ColorPicker_Demo
                 try
                 {
                     Console.WriteLine("Sorting....");
-                    Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.PictureTaken, k))); //x NEEDS FIXING!!
+                    Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.PictureTaken, k)));
                     Console.WriteLine(pic.sorter.theCOLOR);
                     // Delete image to get ready for the next time
                     File.Delete(pic.Path);
                     Console.WriteLine("Sorting done");
-                    Thread.Sleep(6000);
                 }
                 catch (Exception e)
                 {
