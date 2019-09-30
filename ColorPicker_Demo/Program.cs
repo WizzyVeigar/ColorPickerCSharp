@@ -46,7 +46,7 @@ namespace ColorPicker_Demo
             //Looks for the sample folder in all directories 
             Sorter.MakeLists();
             Console.Clear();
-            Console.WriteLine("Version 8.6.KMC");
+            Console.WriteLine("Version 8.7.KMC");
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
             string input = Console.ReadLine().ToLower();
@@ -85,6 +85,7 @@ namespace ColorPicker_Demo
                 {
                     if (Directory.Exists(inputArg) == true)
                     {
+                        Sorter sorter = new Sorter();
                         for (int i = 1; i < 51; i++)
                         {
                             Console.WriteLine("Test number {0}", i);
@@ -92,11 +93,12 @@ namespace ColorPicker_Demo
                             {
                                 "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
                             };
-
+                            
                             List<string> results = new List<string>();
                             foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
                             {
-                                //results.Add(sorter.ClosestColors(GetDominantColour(file, k)));
+                                Image picture = Image.FromFile(file);
+                                results.Add(sorter.ClosestColors(GetDominantColour(picture, k)));
                             }
                             if (!checkList.SequenceEqual(results))
                             {

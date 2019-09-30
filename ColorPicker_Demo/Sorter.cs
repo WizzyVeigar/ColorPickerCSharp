@@ -7,7 +7,7 @@ using System.IO;
 namespace ColorPicker_Demo
 {
     public class Sorter
-    {       
+    {
         static readonly string colorLib = @"/home/pi/images/ColorLib";
         public string theCOLOR;
 
@@ -52,7 +52,7 @@ namespace ColorPicker_Demo
             get { return brownList; }
             set { brownList = value; }
         }
-        
+
         /// <summary>
         /// Finds the difference between <paramref name="c1"/> and <paramref name="c2"/>
         /// </summary>
@@ -61,9 +61,8 @@ namespace ColorPicker_Demo
         /// <returns>Returns how close the two colors are related as an int</returns>
         int ColorDiff(Color c1, Color c2)
         {
-            return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
-                                   + (c1.G - c2.G) * (c1.G - c2.G)
-                                   + (c1.B - c2.B) * (c1.B - c2.B));
+            double distance = Math.Pow(c1.R - c2.R, 2) + Math.Pow(c1.G - c2.G, 2) + Math.Pow(c1.B - c2.B, 2);
+            return (int)Math.Sqrt(distance);
         }
         /// <summary>
         /// Finds the closest color in <paramref name="colors"/> compared to <paramref name="target"/>
@@ -81,8 +80,8 @@ namespace ColorPicker_Demo
         /// </summary>
         /// <param name="compareColor"></param>
         /// <returns>Returns the name of the color list</returns>
-        public string ClosestColors(Color compareColor) 
-        { 
+        public string ClosestColors(Color compareColor)
+        {
             List<Color> closestColors = new List<Color>
             {
                 Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()),
@@ -129,7 +128,7 @@ namespace ColorPicker_Demo
         /// <summary>
         /// Loads the pixels of the pictures in colorLib, into their respective lists
         /// </summary>
-        public static void MakeLists() 
+        public static void MakeLists()
         {
             if (Directory.Exists(colorLib) == true)
             {
