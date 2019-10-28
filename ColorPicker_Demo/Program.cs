@@ -65,7 +65,7 @@ namespace ColorPicker_Demo
                         Thread sortingProcessThread = new Thread(SortingProcess);
 
                         Console.WriteLine("Press button to start");
-                        input = "h"; //Messenger.StartProcess();
+                        input = Messenger.StartProcess();
                         if (input == "h")
                         {
                             sortingProcessThread.Start();
