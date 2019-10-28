@@ -4,7 +4,7 @@ namespace ColorPicker_Demo
 {
     static class Messenger
     {
-        static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
+        static SerialPort seriPort = new SerialPort("/dev/ttyACM0"); //
 
         public static void OpenPort()
         {

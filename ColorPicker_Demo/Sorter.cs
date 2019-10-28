@@ -8,7 +8,7 @@ namespace ColorPicker_Demo
 {
     public class Sorter
     {
-        static readonly string colorLib = @"/home/pi/images/ColorLib";
+        static readonly string colorLib = "..\\..\\ColorLib\\"; //@"/home/pi/images/ColorLib";
         public string theCOLOR;
 
         //All lists contain the pixels of the ColorLib images, of which color they refer to
@@ -135,7 +135,6 @@ namespace ColorPicker_Demo
             {
                 foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(colorLib), "*.*", SearchOption.AllDirectories))
                 {
-                    Console.WriteLine("Found da lib :P");
                     if (file.Contains("red"))
                     {
                         AddPixelColor(redList, file);

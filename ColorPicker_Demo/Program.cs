@@ -47,8 +47,9 @@ namespace ColorPicker_Demo
             string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
             //Looks for the sample folder in all directories 
             Sorter.MakeLists();
+            Console.WriteLine("Found the color library");
             Console.Clear();
-            Console.WriteLine("Version 8.6.KMC");
+            Console.WriteLine("Version 8.8.KMC");
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
             string input = Console.ReadLine().ToLower();
@@ -64,7 +65,7 @@ namespace ColorPicker_Demo
                         Thread sortingProcessThread = new Thread(SortingProcess);
 
                         Console.WriteLine("Press button to start");
-                        input = Messenger.StartProcess();
+                        input = "h"; //Messenger.StartProcess();
                         if (input == "h")
                         {
                             sortingProcessThread.Start();
@@ -133,13 +134,14 @@ namespace ColorPicker_Demo
 
                 Thread.Sleep(5000);
                 Picture pic = new Picture();
+                
                 try
                 {
                     Console.WriteLine("Sorting....");
                     Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.PictureTaken, k)));
                     Console.WriteLine(pic.sorter.theCOLOR);
-                    // Delete image to get ready for the next time
                     File.Delete(pic.Path);
+                    // Delete image to get ready for the next time
                     Console.WriteLine("Sorting done");
                 }
                 catch (Exception e)
