@@ -132,7 +132,7 @@ namespace ColorPicker_Demo
                 {
                     Messenger.CollectLeft();
                     change = true;
-                    Thread.Sleep(12000);
+                    Thread.Sleep(14000);
                 }
 
                 
