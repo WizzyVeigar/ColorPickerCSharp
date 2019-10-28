@@ -48,6 +48,7 @@ namespace ColorPicker_Demo
             //Looks for the sample folder in all directories 
             Sorter.MakeLists();
             Console.WriteLine("Found the color library");
+            
             Console.Clear();
             Console.WriteLine("Version 8.8.KMC");
             Console.Title = "R2.0 SSSorter";
@@ -125,14 +126,16 @@ namespace ColorPicker_Demo
                 {
                     Messenger.CollectRight();
                     change = false;
+                    Thread.Sleep(9000);
                 }
                 else
                 {
                     Messenger.CollectLeft();
                     change = true;
+                    Thread.Sleep(12000);
                 }
 
-                Thread.Sleep(5000);
+                
                 Picture pic = new Picture();
                 
                 try
