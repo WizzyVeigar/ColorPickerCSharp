@@ -35,6 +35,7 @@ using System.Linq;
 
 //CREDIT TO NANSYT AS CO-OWNER
 //https://github.com/NansyT
+
 namespace ColorPicker_Demo
 {
     class Program
@@ -82,7 +83,7 @@ namespace ColorPicker_Demo
                         }
                     }
                 }
-
+                //For testing purposes on windows
                 if (input == "w")
                 {
                     if (Directory.Exists(inputArg) == true)
