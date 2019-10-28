@@ -4,7 +4,8 @@ namespace ColorPicker_Demo
 {
     static class Messenger
     {
-        static SerialPort seriPort = new SerialPort("/dev/ttyACM0"); //
+        static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
+        static string inputArm;
 
         public static void OpenPort()
         {
@@ -16,9 +17,9 @@ namespace ColorPicker_Demo
         {
             while (true)
             {
-                string a = seriPort.ReadExisting();
+                inputArm = seriPort.ReadExisting();
 
-                if (a.Trim().Contains("h"))
+                if (inputArm.Trim().Contains("h"))
                 {
                     return "h";
                 }
@@ -30,9 +31,9 @@ namespace ColorPicker_Demo
         {
             while (true)
             {
-                string a = seriPort.ReadExisting();
+                inputArm = seriPort.ReadExisting();
 
-                if (a.Contains("t"))
+                if (inputArm.Trim().Contains("t"))
                 {
                     return "t";
                 }
