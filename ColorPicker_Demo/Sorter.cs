@@ -8,7 +8,7 @@ namespace ColorPicker_Demo
 {
     public class Sorter
     {
-        static readonly string colorLib = @"/home/pi/images/ColorLib";
+        static readonly string colorLib = @"/home/pi/images/ColorLib"; //"..\\..\\ColorLib\\";
         public string theCOLOR;
 
         //All lists contain the pixels of the ColorLib images, of which color they refer to
