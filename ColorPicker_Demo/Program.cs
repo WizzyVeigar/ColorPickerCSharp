@@ -103,6 +103,7 @@ namespace ColorPicker_Demo
                             {
                                 Image image = Image.FromFile(file);
                                 results.Add(sorter.ClosestColors(GetDominantColour(image, k)));
+                                
                             }
                             if (!checkList.SequenceEqual(results))
                             {
