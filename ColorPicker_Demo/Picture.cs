@@ -19,6 +19,9 @@ namespace ColorPicker_Demo
 {
     public class Picture
     {
+        //Put global variables here
+        //Local variables are in the top of a method!
+
         public Sorter sorter = new Sorter();
 
         // Path to image that python created
@@ -39,9 +42,8 @@ namespace ColorPicker_Demo
 
         public Picture()
         {
-            TakePicture();
         }
-
+        
 
         //Takes the actual picture
         public Image TakePicture() 
@@ -59,7 +61,7 @@ namespace ColorPicker_Demo
                     RedirectStandardOutput = false
                 };
 
-                Console.WriteLine("Starting Process");
+                //Console.WriteLine("Starting Process");
                 Process process = Process.Start(start);
             }
             catch (Exception e)
@@ -75,14 +77,12 @@ namespace ColorPicker_Demo
                     if (File.Exists(Path))
                     {
                         PictureTaken = Image.FromFile(Path);
-                        Console.WriteLine("Found Image");
                         foundImage = true;
                     }
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Waiting on picture");
-                    Thread.Sleep(6000);
+                    Thread.Sleep(2000);
                 }
             }
             return PictureTaken;
