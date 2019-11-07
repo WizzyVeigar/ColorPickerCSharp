@@ -193,7 +193,7 @@ namespace ColorPicker_Demo
                 //Math starts here!
                 IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d);
 
-                //You will end up with a numbre of _colours lists depending on the numbers of K
+                //You will end up with a number of _colours lists depending on the numbers of K
                 //_colour contains all the colour that were determined to be closest to the cluster
                 //_colours calculate the new center for that cluster
 

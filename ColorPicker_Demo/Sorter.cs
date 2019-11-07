@@ -10,6 +10,7 @@ namespace ColorPicker_Demo
     {
         static readonly string colorLib = @"/home/pi/images/ColorLib"; //"..\\..\\ColorLib\\";
         public string theCOLOR;
+        static Bitmap bitmap;
 
         //All lists contain the pixels of the ColorLib images, of which color they refer to
         private static List<Color> redList = new List<Color>();
@@ -164,7 +165,7 @@ namespace ColorPicker_Demo
         }
         public static void AddPixelColor(List<Color> list, string file)
         {
-            Bitmap bitmap = new Bitmap(file);
+            bitmap = new Bitmap(file);
 
             for (int i = 0; i < bitmap.Width; i++)
             {
