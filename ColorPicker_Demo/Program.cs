@@ -62,7 +62,7 @@ namespace ColorPicker_Demo
             string input = Console.ReadLine().ToLower();
             if (input == "start" || input == "sort" || input == "s")
             {
-                Console.WriteLine("What OS are you running?... (W) & (R)");
+                Console.WriteLine("What OS are you running?... (W) & (R)"); /*CAN BE REMOVED*/
                 input = Console.ReadLine().ToLower();
                 if (input == "r")
                 {
@@ -141,8 +141,7 @@ namespace ColorPicker_Demo
                     change = true;
                     Thread.Sleep(14000);
                     pic.TakePicture();
-                }             
-                
+                }                
 
                 try
                 {
