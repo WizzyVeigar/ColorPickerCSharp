@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using System.IO;
+using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace ColorPicker_Demo
 {
     public class Sorter
     {
-        static readonly string colorLib = @"/home/pi/images/ColorLib";
-        public string theCOLOR;
+        //Stopwatch noLambdaWatch = new Stopwatch();
+        //Stopwatch lambdaWatch = new Stopwatch();
 
+        public string theCOLOR;
         //All lists contain the pixels of the ColorLib images, of which color they refer to
         private static List<Color> redList = new List<Color>();
         public static List<Color> RedList
@@ -65,16 +68,49 @@ namespace ColorPicker_Demo
             double distance = Math.Pow(c1.R - c2.R, 2) + Math.Pow(c1.G - c2.G, 2) + Math.Pow(c1.B - c2.B, 2);
             return (int)Math.Sqrt(distance);
         }
+
         /// <summary>
         /// Finds the closest color in <paramref name="colors"/> compared to <paramref name="target"/>
         /// </summary>
         /// <param name="colors"></param>
         /// <param name="target"></param>
         /// <returns>Returns the index of the color that is closest to the <paramref name="target"/>, from <paramref name="colors"/></returns>
-        public int ClosestColorTo(List<Color> colors, Color target)
+        //public int ClosestColorTo(List<Color> colors, Color target)
+        //{
+        //    lambdaWatch.Start();
+        //    int colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(index => index);
+        //    //Expression<Func<List<Color>, int>> lambda = num => num.Select(n => ColorDiff(n, target)).Min(n => n);
+        //    //Debug.WriteLine(lambda);
+        //    //return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
+        //    int result = colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
+        //    lambdaWatch.Stop();
+        //    Debug.WriteLine("lambdaWatch is done: " + lambdaWatch.Elapsed);
+        //    return result;
+        //}
+
+
+        /// <summary>
+        /// Finds the closest color on <paramref name="colors"/> compared to <paramref name="target"/> without the use of Lambdas
+        /// </summary>
+        /// <Returns>the index of the color that is closest to the <paramref name="target"/>, from <paramref name="colors"/></returns>
+        public int ClosestColorToNoLambda(List<Color> colors, Color target)
         {
-            int colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
-            return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
+            //noLambdaWatch.Start();
+            int iIndex =0;
+            int index = int.MaxValue;
+
+            for (int i = 0; i < colors.Count; i++)
+            {
+                if (index > ColorDiff(colors[i], target))
+                {
+
+                    iIndex = i;
+                    index = ColorDiff(colors[i], target);
+                }
+            }
+            //noLambdaWatch.Stop();
+            //Debug.WriteLine("noLambdaWatch is done: " + noLambdaWatch.Elapsed);
+            return iIndex;
         }
         /// <summary>
         /// Gets the closest color from each list and places them in closestColors 
@@ -83,17 +119,29 @@ namespace ColorPicker_Demo
         /// <returns>Returns the name of the color list</returns>
         public string ClosestColors(Color compareColor)
         {
-            List<Color> closestColors = new List<Color>
-            {
-                Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()),
-                Color.FromArgb(OrangeList[ClosestColorTo(OrangeList, compareColor)].ToArgb()),
-                Color.FromArgb(YellowList[ClosestColorTo(YellowList, compareColor)].ToArgb()),
-                Color.FromArgb(GreenList[ClosestColorTo(GreenList, compareColor)].ToArgb()),
-                Color.FromArgb(BlueList[ClosestColorTo(BlueList, compareColor)].ToArgb()),
-                Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb())
-            };
+            //List<Color> closestColors = new List<Color>
+            //{
+            //    Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()),
+            //    Color.FromArgb(OrangeList[ClosestColorTo(OrangeList, compareColor)].ToArgb()),
+            //    Color.FromArgb(YellowList[ClosestColorTo(YellowList, compareColor)].ToArgb()),
+            //    Color.FromArgb(GreenList[ClosestColorTo(GreenList, compareColor)].ToArgb()),
+            //    Color.FromArgb(BlueList[ClosestColorTo(BlueList, compareColor)].ToArgb()),
+            //    Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb())
+            //};
 
-            return AssignToColor(ClosestColorTo(closestColors, compareColor));
+            List<Color> closestColorsWithNoLambdas = new List<Color>
+            {
+                Color.FromArgb(RedList[ClosestColorToNoLambda(RedList, compareColor)].ToArgb()),
+                Color.FromArgb(OrangeList[ClosestColorToNoLambda(OrangeList, compareColor)].ToArgb()),
+                Color.FromArgb(YellowList[ClosestColorToNoLambda(YellowList, compareColor)].ToArgb()),
+                Color.FromArgb(GreenList[ClosestColorToNoLambda(GreenList, compareColor)].ToArgb()),
+                Color.FromArgb(BlueList[ClosestColorToNoLambda(BlueList, compareColor)].ToArgb()),
+                Color.FromArgb(BrownList[ClosestColorToNoLambda(BrownList, compareColor)].ToArgb())
+            };
+            //System.Diagnostics.Debug.WriteLine("Lambda Result: " + ClosestColorTo(closestColors, compareColor));
+            System.Diagnostics.Debug.WriteLine("Without Lambda Result: " + ClosestColorToNoLambda(closestColorsWithNoLambdas, compareColor) + "GG EZ");
+            return AssignToColor(ClosestColorToNoLambda(closestColorsWithNoLambdas, compareColor));
+            //return AssignToColor(ClosestColorTo(closestColors, compareColor));
         }
 
         /// <summary>
@@ -101,7 +149,7 @@ namespace ColorPicker_Demo
         /// </summary>
         /// <param name="indexOfCC"></param>
         /// <returns>returns a string depending on <paramref name="indexOfCC"/></returns>
-        string AssignToColor(int indexOfCC)
+        private string AssignToColor(int indexOfCC)
         {
             switch (indexOfCC)
             {
@@ -131,11 +179,11 @@ namespace ColorPicker_Demo
         /// </summary>
         public static void MakeLists()
         {
+            string colorLib = @"/home/pi/images/ColorLib"; //"..\\..\\ColorLib";
             if (Directory.Exists(colorLib) == true)
             {
                 foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(colorLib), "*.*", SearchOption.AllDirectories))
                 {
-                    Console.WriteLine("Found da lib :P");
                     if (file.Contains("red"))
                     {
                         AddPixelColor(redList, file);
@@ -165,13 +213,14 @@ namespace ColorPicker_Demo
         }
         public static void AddPixelColor(List<Color> list, string file)
         {
-            Bitmap bitmap = new Bitmap(file);
-
-            for (int i = 0; i < bitmap.Width; i++)
+            using (Bitmap bitmap = new Bitmap(file))
             {
-                for (int j = 0; j < bitmap.Height; j++)
+                for (int i = 0; i < bitmap.Width; i++)
                 {
-                    list.Add(Color.FromArgb(bitmap.GetPixel(i, j).ToArgb()));
+                    for (int j = 0; j < bitmap.Height; j++)
+                    {
+                        list.Add(Color.FromArgb(bitmap.GetPixel(i, j).ToArgb()));
+                    }
                 }
             }
         }

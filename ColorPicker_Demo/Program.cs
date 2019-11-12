@@ -35,7 +35,6 @@ using System.Linq;
 
 //CREDIT TO NANSYT AS CO-OWNER
 //https://github.com/NansyT
-
 namespace ColorPicker_Demo
 {
     class Program
@@ -43,27 +42,33 @@ namespace ColorPicker_Demo
 
         static bool change;
         const int k = 3;
+        static Picture pic = new Picture();
+        static Thread sortingProcessThread;
+
         static void Main(string[] args)
         {
+
+            sortingProcessThread = new Thread(SortingProcess);
             string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
             //Looks for the sample folder in all directories 
             Sorter.MakeLists();
-            Console.Clear();
-            Console.WriteLine("Version 8.6.KMC");
+            //Console.WriteLine("Found the color library");
+            //Console.Clear();
             Console.Title = "R2.0 SSSorter";
-            Console.WriteLine("R2.0 SSSorter" + "\n" + "\n" + "What would you like to do?");
+            Console.WriteLine(
+                "Version 9.2.KMC \n" +
+                "R2.0 SSSorter" + "\n" + "\n" +
+                "What would you like to do?");
             string input = Console.ReadLine().ToLower();
             if (input == "start" || input == "sort" || input == "s")
             {
-                Console.WriteLine("What OS are you running?... (W) & (R)");
+                Console.WriteLine("What OS are you running?... (W) & (R)"); /*CAN BE REMOVED*/
                 input = Console.ReadLine().ToLower();
                 if (input == "r")
                 {
                     Messenger.OpenPort();
                     while (true)
                     {
-                        Thread sortingProcessThread = new Thread(SortingProcess);
-
                         Console.WriteLine("Press button to start");
                         input = Messenger.StartProcess();
                         if (input == "h")
@@ -71,6 +76,7 @@ namespace ColorPicker_Demo
                             sortingProcessThread.Start();
                         }
 
+                        //TODO Fix, it get called all the time, no good
                         while (sortingProcessThread.IsAlive)
                         {
                             input = Messenger.StopProcess();
@@ -83,35 +89,36 @@ namespace ColorPicker_Demo
                         }
                     }
                 }
-                //For testing purposes on windows
-                if (input == "w")
-                {
-                    if (Directory.Exists(inputArg) == true)
-                    {
-                        Sorter sorter = new Sorter();
-                        for (int i = 1; i < 51; i++)
-                        {
-                            Console.WriteLine("Test number {0}", i);
-                            List<string> checkList = new List<string>()
-                            {
-                                "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
-                            };
 
-                            List<string> results = new List<string>();
-                            foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
-                            {
-                                Image image = Image.FromFile(file);
-                                results.Add(sorter.ClosestColors(GetDominantColour(image, k)));
-                            }
-                            if (!checkList.SequenceEqual(results))
-                            {
-                                Console.WriteLine(string.Join("\n", results));
-                            }
-                            Console.WriteLine("Done");
-                        }
-                    }
-                    Console.ReadLine();
-                }
+                //Unused code, delete before deployment
+                //if (input == "w")
+                //{
+                //    if (Directory.Exists(inputArg) == true)
+                //    {
+                //        Sorter sorter = new Sorter();
+                //        for (int i = 1; i < 51; i++)
+                //        {
+                //            Console.WriteLine("Test number {0}", i);
+                //            List<string> checkList = new List<string>()
+                //            {
+                //                "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
+                //            };
+
+                //            List<string> results = new List<string>();
+                //            foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
+                //            {
+                //                Image image = Image.FromFile(file);
+                //                results.Add(sorter.ClosestColors(GetDominantColour(image, k)));
+                //            }
+                //            if (!checkList.SequenceEqual(results))
+                //            {
+                //                Console.WriteLine(string.Join("\n", results));
+                //            }
+                //            Console.WriteLine("Done");
+                //        }
+                //    }
+                //    Console.ReadLine();
+                //}
             }
             Console.WriteLine("Unable to open {0}. Ensure it's a file or directory", inputArg);
         }
@@ -125,23 +132,23 @@ namespace ColorPicker_Demo
                 {
                     Messenger.CollectRight();
                     change = false;
+                    Thread.Sleep(9000);
+                    pic.TakePicture();
                 }
                 else
                 {
                     Messenger.CollectLeft();
                     change = true;
-                }
+                    Thread.Sleep(14000);
+                    pic.TakePicture();
+                }                
 
-                Thread.Sleep(5000);
-                Picture pic = new Picture();
                 try
                 {
-                    Console.WriteLine("Sorting....");
                     Messenger.SendToArm(pic.sorter.ClosestColors(GetDominantColour(pic.PictureTaken, k)));
-                    Console.WriteLine(pic.sorter.theCOLOR);
-                    // Delete image to get ready for the next time
+                    Console.WriteLine(DateTime.Now + " " + pic.sorter.theCOLOR);
                     File.Delete(pic.Path);
-                    Console.WriteLine("Sorting done");
+                    // Delete image to get ready for the next time
                 }
                 catch (Exception e)
                 {
@@ -150,6 +157,8 @@ namespace ColorPicker_Demo
                 }
             }
         }
+
+
 
         private static Color GetDominantColour(Image image, int k)
         {
@@ -183,7 +192,7 @@ namespace ColorPicker_Demo
                 //Math starts here!
                 IList<Color> dominantColours = clustering.Calculate(k, colors, 5.0d);
 
-                //You will end up with a numbre of _colours lists depending on the numbers of K
+                //You will end up with a number of _colours lists depending on the numbers of K
                 //_colour contains all the colour that were determined to be closest to the cluster
                 //_colours calculate the new center for that cluster
 
