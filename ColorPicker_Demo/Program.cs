@@ -79,7 +79,7 @@ namespace ColorPicker_Demo
                         //TODO Fix, it get called all the time, no good
                         while (sortingProcessThread.IsAlive)
                         {
-                            input = Messenger.StopProcess();
+                            input =  Messenger.StopProcess();
 
                             if (input == "t")
                             {
@@ -87,6 +87,8 @@ namespace ColorPicker_Demo
                                 Messenger.RestartArm();
                             }
                         }
+
+                        
                     }
                 }
 
@@ -122,6 +124,7 @@ namespace ColorPicker_Demo
             }
             Console.WriteLine("Unable to open {0}. Ensure it's a file or directory", inputArg);
         }
+        
 
         public static void SortingProcess()
         {
