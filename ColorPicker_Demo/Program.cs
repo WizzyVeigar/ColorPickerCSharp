@@ -56,7 +56,7 @@ namespace ColorPicker_Demo
             //Console.Clear();
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine(
-                "Version 9.2.KMC \n" +
+                "Version 9.3.KMC \n" +
                 "R2.0 SSSorter" + "\n" + "\n" +
                 "What would you like to do?");
             string input = Console.ReadLine().ToLower();
@@ -68,7 +68,7 @@ namespace ColorPicker_Demo
                     Console.Clear();
                     Messenger.OpenPort();
                     Console.WriteLine("Press button to start");
-                    Console.ReadLine();
+                    
 
 
 
@@ -105,7 +105,7 @@ namespace ColorPicker_Demo
                     //    Console.ReadLine();
                     //}
                 }
-
+                Console.WriteLine("I am outside the loop now and I'm stuck... hep");
             }
             //Console.WriteLine("Unable to open {0}. Ensure it's a file or directory", inputArg);
         }
@@ -113,18 +113,25 @@ namespace ColorPicker_Demo
         private static void Messenger_StartArm(object sender, EventArgs e)
         {
             //programRunning = true;
+            if (sortingProcessThread.IsAlive)
+            {
+                Console.WriteLine("The Sorting thread is still alive");
+                Console.ReadLine();
+            }
             sortingProcessThread.Start();
         }
 
         /// <summary>
-        /// Runs when message from port contais "t"
+        /// Runs when message from port contains "t"
         /// kills the sorting thread and restarts the arm
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
         public static void Messenger_StopArm(object o, EventArgs e)
         {
+            File.Delete(pic.Path);
             sortingProcessThread.Abort();
+            Console.WriteLine("Sorting deletus fetus");
             Messenger.RestartArm();
         }
 
