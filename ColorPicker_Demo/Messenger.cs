@@ -41,13 +41,10 @@ namespace ColorPicker_Demo
                     case "t":
                         listening = false;
                         StopArm?.Invoke("", new EventArgs());
-                        Console.WriteLine("StopArm Event was called");
-                        OpenPort();
                         break;
                     case "h":
                         if (StartArm != null)
                             StartArm("", new EventArgs());
-                        Console.WriteLine("StartArm Event was called");
                         break;
                 }
             }
@@ -76,6 +73,11 @@ namespace ColorPicker_Demo
             if (seriPort.IsOpen == true)
             {
                 seriPort.Write("r");
+                if (!listening)
+                {
+                    seriPort.Close();
+                    tr.Start();
+                }
             }
         }
 
