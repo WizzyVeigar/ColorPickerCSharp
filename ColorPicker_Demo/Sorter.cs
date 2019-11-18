@@ -138,8 +138,7 @@ namespace ColorPicker_Demo
                 Color.FromArgb(BlueList[ClosestColorToNoLambda(BlueList, compareColor)].ToArgb()),
                 Color.FromArgb(BrownList[ClosestColorToNoLambda(BrownList, compareColor)].ToArgb())
             };
-            //System.Diagnostics.Debug.WriteLine("Lambda Result: " + ClosestColorTo(closestColors, compareColor));
-            System.Diagnostics.Debug.WriteLine("Without Lambda Result: " + ClosestColorToNoLambda(closestColorsWithNoLambdas, compareColor) + "GG EZ");
+            //System.Diagnostics.Debug.WriteLine("Without Lambda Result: " + ClosestColorToNoLambda(closestColorsWithNoLambdas, compareColor) + "GG EZ");
             return AssignToColor(ClosestColorToNoLambda(closestColorsWithNoLambdas, compareColor));
             //return AssignToColor(ClosestColorTo(closestColors, compareColor));
         }

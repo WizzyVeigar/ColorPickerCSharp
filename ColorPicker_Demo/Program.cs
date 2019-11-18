@@ -35,6 +35,7 @@ using System.Linq;
 
 //CREDIT TO NANSYT AS CO-OWNER
 //https://github.com/NansyT
+
 namespace ColorPicker_Demo
 {
     class Program
@@ -47,12 +48,11 @@ namespace ColorPicker_Demo
 
         static void Main(string[] args)
         {
-
+            Messenger.StopArm += Messenger_StopArm;
+            Messenger.StartArm += Messenger_StartArm;
             sortingProcessThread = new Thread(SortingProcess);
-            string inputArg = "..\\..\\Sample\\"; //! CONTENTS ARE NOW M&M PICTURES!
             //Looks for the sample folder in all directories 
             Sorter.MakeLists();
-            //Console.WriteLine("Found the color library");
             //Console.Clear();
             Console.Title = "R2.0 SSSorter";
             Console.WriteLine(
@@ -62,69 +62,71 @@ namespace ColorPicker_Demo
             string input = Console.ReadLine().ToLower();
             if (input == "start" || input == "sort" || input == "s")
             {
-                Console.WriteLine("What OS are you running?... (W) & (R)"); /*CAN BE REMOVED*/
-                input = Console.ReadLine().ToLower();
-                if (input == "r")
+                while (!Messenger.listening)
                 {
+                    //! MAKE IT LOOP UNTIL BUTTON IS PRESSED
+                    Console.Clear();
                     Messenger.OpenPort();
-                    while (true)
-                    {
-                        Console.WriteLine("Press button to start");
-                        input = Messenger.StartProcess();
-                        if (input == "h")
-                        {
-                            sortingProcessThread.Start();
-                        }
+                    Console.WriteLine("Press button to start");
+                    Console.ReadLine();
 
-                        //TODO Fix, it get called all the time, no good
-                        while (sortingProcessThread.IsAlive)
-                        {
-                            input =  Messenger.StopProcess();
 
-                            if (input == "t")
-                            {
-                                sortingProcessThread.Abort();
-                                Messenger.RestartArm();
-                            }
-                        }
 
-                        
-                    }
+                    //Console.WriteLine("What OS are you running?... (W) & (R)"); /*CAN BE REMOVED*/
+                    //input = Console.ReadLine().ToLower();
+                    //if (input == "r")
+                    //Unused code, delete before deployment
+                    //if (input == "w")
+                    //{
+                    //    if (Directory.Exists(inputArg) == true)
+                    //    {
+                    //        Sorter sorter = new Sorter();
+                    //        for (int i = 1; i < 51; i++)
+                    //        {
+                    //            Console.WriteLine("Test number {0}", i);
+                    //            List<string> checkList = new List<string>()
+                    //            {
+                    //                "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
+                    //            };
+
+                    //            List<string> results = new List<string>();
+                    //            foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
+                    //            {
+                    //                Image image = Image.FromFile(file);
+                    //                results.Add(sorter.ClosestColors(GetDominantColour(image, k)));
+                    //            }
+                    //            if (!checkList.SequenceEqual(results))
+                    //            {
+                    //                Console.WriteLine(string.Join("\n", results));
+                    //            }
+                    //            Console.WriteLine("Done");
+                    //        }
+                    //    }
+                    //    Console.ReadLine();
+                    //}
                 }
 
-                //Unused code, delete before deployment
-                //if (input == "w")
-                //{
-                //    if (Directory.Exists(inputArg) == true)
-                //    {
-                //        Sorter sorter = new Sorter();
-                //        for (int i = 1; i < 51; i++)
-                //        {
-                //            Console.WriteLine("Test number {0}", i);
-                //            List<string> checkList = new List<string>()
-                //            {
-                //                "Brown", "Brown", "Green", "Green", "Blue", "Blue", "Orange", "Orange", "Orange", "Red", "Red", "Yellow", "Yellow"
-                //            };
-
-                //            List<string> results = new List<string>();
-                //            foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(inputArg), "*.*", SearchOption.AllDirectories))
-                //            {
-                //                Image image = Image.FromFile(file);
-                //                results.Add(sorter.ClosestColors(GetDominantColour(image, k)));
-                //            }
-                //            if (!checkList.SequenceEqual(results))
-                //            {
-                //                Console.WriteLine(string.Join("\n", results));
-                //            }
-                //            Console.WriteLine("Done");
-                //        }
-                //    }
-                //    Console.ReadLine();
-                //}
             }
-            Console.WriteLine("Unable to open {0}. Ensure it's a file or directory", inputArg);
+            //Console.WriteLine("Unable to open {0}. Ensure it's a file or directory", inputArg);
         }
-        
+
+        private static void Messenger_StartArm(object sender, EventArgs e)
+        {
+            //programRunning = true;
+            sortingProcessThread.Start();
+        }
+
+        /// <summary>
+        /// Runs when message from port contais "t"
+        /// kills the sorting thread and restarts the arm
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public static void Messenger_StopArm(object o, EventArgs e)
+        {
+            sortingProcessThread.Abort();
+            Messenger.RestartArm();
+        }
 
         public static void SortingProcess()
         {
@@ -144,7 +146,7 @@ namespace ColorPicker_Demo
                     change = true;
                     Thread.Sleep(14000);
                     pic.TakePicture();
-                }                
+                }
 
                 try
                 {

@@ -1,47 +1,57 @@
 ﻿using System.IO.Ports;
+using System.Threading;
+using System;
 
 namespace ColorPicker_Demo
 {
-    static class Messenger
+    public class Messenger
     {
         static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
         static string inputArm;
+        static Thread tr = new Thread(ListenToState);
+        public static event EventHandler StopArm;
+        public static event EventHandler StartArm;
+        public static bool listening = false;
 
+        /// <summary>
+        /// Open port, strart listening and 
+        /// stard thread if nessesary
+        /// </summary>
         public static void OpenPort()
         {
             seriPort.Open();
+            listening = true;
+            if (tr.IsAlive == false)
+                tr.Start();
         }
 
-        //STARTS THE COLOR SORTING PROCESS
-        public static string StartProcess() 
+        /// <summary>
+        /// Listen to input from usb
+        /// </summary>
+        private static void ListenToState()
         {
-            while (true)
+            while (listening)
             {
                 inputArm = seriPort.ReadExisting();
 
-                if (inputArm.Trim().Contains("h"))
+                // if message contains "t" stop listening  
+                // and stop the program
+                switch (inputArm.Trim())
                 {
-                    return "h";
+                    case "t":
+                        listening = false;
+                        StopArm?.Invoke("", new EventArgs());
+                        break;
+                    case "h":
+                        if (StartArm != null)
+                            StartArm("", new EventArgs());
+                        break;
                 }
             }
         }
 
-        //STOPS THE ARM
-        public static string StopProcess() 
-        {
-            while (true)
-            {
-                inputArm = seriPort.ReadExisting();
 
-                if (inputArm.Trim().Contains("t"))
-                {
-                    return "t";
-                }
-            }
-        }
-
-        //STARTS THE ARM
-        public static void CollectRight() 
+        public static void CollectRight()
         {
             if (seriPort.IsOpen == true)
             {
@@ -58,16 +68,21 @@ namespace ColorPicker_Demo
         }
 
         //RESETS THE ARM
-        public static void RestartArm() 
+        public static void RestartArm()
         {
             if (seriPort.IsOpen == true)
             {
                 seriPort.Write("r");
+                if (!listening)
+                {
+                    seriPort.Close();
+                    tr.Start();
+                }
             }
         }
 
         //SENDS THE COLOR TO THE ARM
-        public static void SendToArm(string theCOLOR) 
+        public static void SendToArm(string theCOLOR)
         {
             if (seriPort.IsOpen == true)
             {
