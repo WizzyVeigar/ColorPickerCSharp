@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorPicker_Demo", "ColorPicker_Demo\ColorPicker_Demo.csproj", "{A64148CB-BF0F-4426-9BCE-4AF80C4E437B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoColorPicker", "ColorPicker_Demo\ArduinoColorPicker.csproj", "{A64148CB-BF0F-4426-9BCE-4AF80C4E437B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

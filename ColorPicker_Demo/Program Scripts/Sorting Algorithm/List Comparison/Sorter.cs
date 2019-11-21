@@ -6,12 +6,10 @@ using System.IO;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
-namespace ColorPicker_Demo
+namespace ArduinoColorPicker
 {
     public class Sorter
     {
-        //Stopwatch noLambdaWatch = new Stopwatch();
-        //Stopwatch lambdaWatch = new Stopwatch();
 
         public string theCOLOR;
         //All lists contain the pixels of the ColorLib images, of which color they refer to
@@ -70,33 +68,12 @@ namespace ColorPicker_Demo
         }
 
         /// <summary>
-        /// Finds the closest color in <paramref name="colors"/> compared to <paramref name="target"/>
-        /// </summary>
-        /// <param name="colors"></param>
-        /// <param name="target"></param>
-        /// <returns>Returns the index of the color that is closest to the <paramref name="target"/>, from <paramref name="colors"/></returns>
-        //public int ClosestColorTo(List<Color> colors, Color target)
-        //{
-        //    lambdaWatch.Start();
-        //    int colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(index => index);
-        //    //Expression<Func<List<Color>, int>> lambda = num => num.Select(n => ColorDiff(n, target)).Min(n => n);
-        //    //Debug.WriteLine(lambda);
-        //    //return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
-        //    int result = colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
-        //    lambdaWatch.Stop();
-        //    Debug.WriteLine("lambdaWatch is done: " + lambdaWatch.Elapsed);
-        //    return result;
-        //}
-
-
-        /// <summary>
         /// Finds the closest color on <paramref name="colors"/> compared to <paramref name="target"/> without the use of Lambdas
         /// </summary>
         /// <Returns>the index of the color that is closest to the <paramref name="target"/>, from <paramref name="colors"/></returns>
-        public int ClosestColorToNoLambda(List<Color> colors, Color target)
+        public int ClosestColorTo(List<Color> colors, Color target)
         {
-            //noLambdaWatch.Start();
-            int iIndex =0;
+            int iIndex = 0;
             int index = int.MaxValue;
 
             for (int i = 0; i < colors.Count; i++)
@@ -108,8 +85,6 @@ namespace ColorPicker_Demo
                     index = ColorDiff(colors[i], target);
                 }
             }
-            //noLambdaWatch.Stop();
-            //Debug.WriteLine("noLambdaWatch is done: " + noLambdaWatch.Elapsed);
             return iIndex;
         }
         /// <summary>
@@ -119,29 +94,16 @@ namespace ColorPicker_Demo
         /// <returns>Returns the name of the color list</returns>
         public string ClosestColors(Color compareColor)
         {
-            //List<Color> closestColors = new List<Color>
-            //{
-            //    Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()),
-            //    Color.FromArgb(OrangeList[ClosestColorTo(OrangeList, compareColor)].ToArgb()),
-            //    Color.FromArgb(YellowList[ClosestColorTo(YellowList, compareColor)].ToArgb()),
-            //    Color.FromArgb(GreenList[ClosestColorTo(GreenList, compareColor)].ToArgb()),
-            //    Color.FromArgb(BlueList[ClosestColorTo(BlueList, compareColor)].ToArgb()),
-            //    Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb())
-            //};
-
             List<Color> closestColorsWithNoLambdas = new List<Color>
             {
-                Color.FromArgb(RedList[ClosestColorToNoLambda(RedList, compareColor)].ToArgb()),
-                Color.FromArgb(OrangeList[ClosestColorToNoLambda(OrangeList, compareColor)].ToArgb()),
-                Color.FromArgb(YellowList[ClosestColorToNoLambda(YellowList, compareColor)].ToArgb()),
-                Color.FromArgb(GreenList[ClosestColorToNoLambda(GreenList, compareColor)].ToArgb()),
-                Color.FromArgb(BlueList[ClosestColorToNoLambda(BlueList, compareColor)].ToArgb()),
-                Color.FromArgb(BrownList[ClosestColorToNoLambda(BrownList, compareColor)].ToArgb())
+                Color.FromArgb(RedList[ClosestColorTo(RedList, compareColor)].ToArgb()),
+                Color.FromArgb(OrangeList[ClosestColorTo(OrangeList, compareColor)].ToArgb()),
+                Color.FromArgb(YellowList[ClosestColorTo(YellowList, compareColor)].ToArgb()),
+                Color.FromArgb(GreenList[ClosestColorTo(GreenList, compareColor)].ToArgb()),
+                Color.FromArgb(BlueList[ClosestColorTo(BlueList, compareColor)].ToArgb()),
+                Color.FromArgb(BrownList[ClosestColorTo(BrownList, compareColor)].ToArgb())
             };
-            //System.Diagnostics.Debug.WriteLine("Lambda Result: " + ClosestColorTo(closestColors, compareColor));
-            System.Diagnostics.Debug.WriteLine("Without Lambda Result: " + ClosestColorToNoLambda(closestColorsWithNoLambdas, compareColor) + "GG EZ");
-            return AssignToColor(ClosestColorToNoLambda(closestColorsWithNoLambdas, compareColor));
-            //return AssignToColor(ClosestColorTo(closestColors, compareColor));
+            return AssignToColor(ClosestColorTo(closestColorsWithNoLambdas, compareColor));
         }
 
         /// <summary>
@@ -211,6 +173,7 @@ namespace ColorPicker_Demo
                 }
             }
         }
+
         public static void AddPixelColor(List<Color> list, string file)
         {
             using (Bitmap bitmap = new Bitmap(file))
@@ -226,80 +189,3 @@ namespace ColorPicker_Demo
         }
     }
 }
-#region BadSorter
-//for (int x = 0; x < bitMapPic.Width; x++)
-//{
-//    for (int y = 0; y < bitMapPic.Height; y++)
-//    {
-//        System.Drawing.Color pixelColor = bitMapPic.GetPixel(x, y);
-
-//        float hue = pixelColor.GetHue();
-//        float sat = pixelColor.GetSaturation();
-//        float lgt = pixelColor.GetBrightness();
-
-//        if (lgt < 0.2)
-//        {
-//            Hue black = new Hue("Black");
-//            colorList.Add(black.Name);
-//        }
-//        else if (lgt > 0.8)
-//        {
-//            Hue white = new Hue("White");
-//            colorList.Add(white.Name);
-//        }
-
-//        else if (sat < 0.25)
-//        {
-//            Hue gray = new Hue("Gray");
-//            colorList.Add(gray.Name);
-//        }
-
-//        else if (hue < 20)
-//        {
-//            Hue red = new Hue("Red");
-//            colorList.Add(red.Name);
-//        }
-//        else if (hue < 50 && lgt < 0.3)
-//        {
-//            Hue brown = new Hue("Brown");
-//            colorList.Add(brown.Name);
-//        }
-//        else if (hue < 50)
-//        {
-//            Hue orange = new Hue("Orange");
-//            colorList.Add(orange.Name);
-//        }
-//        else if (hue < 90)
-//        {
-//            Hue yellow = new Hue("Yellow");
-//            colorList.Add(yellow.Name);
-//        }
-//        else if (hue < 150)
-//        {
-//            Hue green = new Hue("Green");
-//            colorList.Add(green.Name);
-//        }
-//        else if (hue < 210)
-//        {
-//            Hue cyan = new Hue("Cyan");
-//            colorList.Add(cyan.Name);
-//        }
-//        else if (hue < 270)
-//        {
-//            Hue blue = new Hue("Blue");
-//            colorList.Add(blue.Name);
-//        }
-//        else if (hue < 330)
-//        {
-//            Hue magenta = new Hue("Magenta");
-//            colorList.Add(magenta.Name);
-//        }
-//        else
-//        {
-//            Hue ErrorColor = new Hue("ErrorColor");
-//            colorList.Add(ErrorColor.Name);
-//        }
-//    }
-//}
-//    //bitMapPic.Save(@"/home/pi/Desktop/BitmapImage.png", System.Drawing.Imaging.ImageFormat.Png);
-#endregion
