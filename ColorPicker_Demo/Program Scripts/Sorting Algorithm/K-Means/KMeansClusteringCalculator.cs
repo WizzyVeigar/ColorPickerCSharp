@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace ColorPicker_Demo
+namespace ArduinoColorPicker
 {
     /// <summary>
     /// Calculates the K-Means Clusters for a set of colours
@@ -36,7 +36,7 @@ namespace ColorPicker_Demo
 
                 usedIndexes.Add(index);
                 KCluster cluster = new KCluster(colours[index]); //at this point cluster has a random color out of all the pixels in the picture
-                clusters.Add(cluster);                           // adder den cluster med en farve til en liste af clusters
+                clusters.Add(cluster);                           //adds that clusterColor to a list of clusters
             }
 
             bool updated = false;

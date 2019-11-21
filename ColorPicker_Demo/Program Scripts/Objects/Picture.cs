@@ -4,18 +4,8 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading;
 
-// _________         .    .
-//(..       \_    ,  |\  /|
-// \       0  \  /|  \ \/ /
-//  \______    \/ |   \  /
-//     vvvv\    \ |   /  |
-//     \^^^^  ==   \_/   |
-//      `\_   ===    \.  |
-//      / /\_   \ /      |
-//      |/   \_  \|      /
-//             \________/
 
-namespace ColorPicker_Demo
+namespace ArduinoColorPicker
 {
     public class Picture
     {
@@ -24,7 +14,7 @@ namespace ColorPicker_Demo
 
         public Sorter sorter = new Sorter();
 
-        // Path to image that python created
+        // Path to image that cameraPicture.Py created
         private readonly string path = @"/home/pi/images/newImage.png";
 
         public string Path
@@ -48,6 +38,8 @@ namespace ColorPicker_Demo
         //Takes the actual picture
         public Image TakePicture() 
         {            
+            bool foundImage = false;
+
             try
             {
                 ProcessStartInfo start = new ProcessStartInfo
@@ -69,7 +61,6 @@ namespace ColorPicker_Demo
                 Console.WriteLine(e.Message);
             }
 
-            bool foundImage = false;
             while (foundImage == false)
             {
                 try
@@ -87,16 +78,6 @@ namespace ColorPicker_Demo
             }
             return PictureTaken;
         }
-
-        //public Bitmap ResizeImage(Bitmap originImage)       
-        //{
-        //    Rectangle cloneRect = new Rectangle(0, 0, 200, 120);
-        //    System.Drawing.Imaging.PixelFormat pixelFormat = originImage.PixelFormat;
-        //    Bitmap cloneBitMap = originImage.Clone(cloneRect, pixelFormat);
-        //    Console.WriteLine("We made it to goal 2");
-        //    Console.ReadLine();
-        //    return cloneBitMap;
-        //}
     }
 }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace ColorPicker_Demo
+namespace ArduinoColorPicker
 {
 
     /// <summary>
@@ -88,7 +88,7 @@ namespace ColorPicker_Demo
         }
 
         /// <summary>
-        /// Calcultes the Euclidean distance between two colours, <paramref name="c1"/> and <paramref name="c2"/>
+        /// Calculates the Euclidean distance between two colours, <paramref name="c1"/> and <paramref name="c2"/>
         /// </summary>
         public static double EuclideanDistance(Color c1, Color c2)
         {

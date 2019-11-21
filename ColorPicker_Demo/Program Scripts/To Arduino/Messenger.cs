@@ -2,11 +2,11 @@
 using System.Threading;
 using System;
 
-namespace ColorPicker_Demo
+namespace ArduinoColorPicker
 {
     public class Messenger
     {
-        static SerialPort seriPort = new SerialPort("/dev/ttyACM0");
+        static SerialPort seriPort = new SerialPort("/dev/ttyACM0"); //The serialport changes depending on what usb port it's connected
         static string inputArm;
         static Thread tr = new Thread(ListenToState);
         public static event EventHandler StopArm;
@@ -14,8 +14,8 @@ namespace ColorPicker_Demo
         public static bool listening = false;
 
         /// <summary>
-        /// Open port, strart listening and 
-        /// stard thread if nessesary
+        /// Open port, start listening and 
+        /// start thread if nessesary
         /// </summary>
         public static void OpenPort()
         {
@@ -34,8 +34,7 @@ namespace ColorPicker_Demo
             {
                 inputArm = seriPort.ReadExisting();
 
-                // if message contains "t" stop listening  
-                // and stop the program
+                // if message contains "t" stop listening and stop the program
                 switch (inputArm.Trim())
                 {
                     case "t":
@@ -67,8 +66,7 @@ namespace ColorPicker_Demo
             }
         }
 
-        //RESETS THE ARM
-        public static void RestartArm()
+        public static void ResetArm()
         {
             if (seriPort.IsOpen == true)
             {
@@ -76,7 +74,6 @@ namespace ColorPicker_Demo
                 if (!listening)
                 {
                     seriPort.Close();
-                    tr.Start();
                 }
             }
         }
