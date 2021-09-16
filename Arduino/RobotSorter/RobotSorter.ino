@@ -13,7 +13,7 @@ int switchState2;
 
 void setup() {
   Braccio.begin();
-  Braccio.ServoMovement(20,           0, 49, 98, 90, 90, 10 ); //97
+  Braccio.ServoMovement(20,           0, 49, 98, 90, 90, 73 ); //97
   Serial.begin(9600);  // set serial port at desired value
 }
 
@@ -21,13 +21,13 @@ void loop() {
   switchState = digitalRead(2);
   switchState2 = digitalRead(4);
 
-  if (switchState == HIGH) //FIRST BUTTON!
+  if (switchState == HIGH) //PURPLE BUTTON!
   {
     Serial.print("h");
     delay(200);
 
   }
-  if (switchState2 == HIGH) //SECOND BUTTON!
+  if (switchState2 == HIGH) //GREEN BUTTON!
   {
     Serial.print("t");
     delay(200);
@@ -72,36 +72,36 @@ void loop() {
         Braccio.ServoMovement(30,                0, 25, 45, 154, 90, 66 );
         break;
       case 'r': //reset
-        Braccio.ServoMovement(20,                0, 52, 98, 90, 90, 10 ); //Arm stands straight up
+        Braccio.ServoMovement(20,                0, 52, 98, 90, 90, 30 ); //Arm stands straight up
         break;
       case 'a': //Red
         Braccio.ServoMovement(20,                55, 33, 55, 160, 90, 69 ); //Moves to red pile/bowl
-        Braccio.ServoMovement(20,                55, 33, 55, 160, 90, 10 ); //Drops M&M into pile/bowl
+        Braccio.ServoMovement(20,                55, 33, 55, 160, 90, 30 ); //Drops M&M into pile/bowl
         Braccio.ServoMovement(20,                0, 75, 15, 180, 90, 73 );
         break;
       case 'b': //Orange
         Braccio.ServoMovement(20,                80, 33, 55, 160, 90, 69 ); //Moves to orange pile/bowl
-        Braccio.ServoMovement(20,                80, 33, 55, 160, 90, 10 ); //Drops M&M into pile/bowl
+        Braccio.ServoMovement(20,                80, 33, 55, 160, 90, 30 ); //Drops M&M into pile/bowl
         Braccio.ServoMovement(20,                0, 75, 15, 180, 90, 73 );
         break;
       case 'c': //Yellow
         Braccio.ServoMovement(20,                105, 33, 55, 160, 90, 69 ); //Moves to yellow pile/bowl
-        Braccio.ServoMovement(20,                105, 33, 55, 160, 90, 10 ); //Drops M&M into pile/bowl
+        Braccio.ServoMovement(20,                105, 33, 55, 160, 90, 30 ); //Drops M&M into pile/bowl
         Braccio.ServoMovement(20,                0, 75, 15, 180, 90, 73 );
         break;
       case 'd': //Green
         Braccio.ServoMovement(20,                130, 33, 55, 160, 90, 69 );//Moves to green pile/bowl
-        Braccio.ServoMovement(20,                130, 33, 55, 160, 90, 10 );//Drops M&M into pile/bowl
+        Braccio.ServoMovement(20,                130, 33, 55, 160, 90, 30 );//Drops M&M into pile/bowl
         Braccio.ServoMovement(20,                0, 75, 15, 180, 90, 73 );
         break;
       case 'e': //Blue
         Braccio.ServoMovement(20,                155, 33, 55, 160, 90, 69 );//Moves to blue pile/bowl
-        Braccio.ServoMovement(20,                155, 33, 55, 160, 90, 10 );//Drops M&M into pile/bowl
+        Braccio.ServoMovement(20,                155, 33, 55, 160, 90, 30 );//Drops M&M into pile/bowl
         Braccio.ServoMovement(20,                0, 75, 15, 180, 90, 73 );
         break;
       case 'f': //Brown
         Braccio.ServoMovement(20,                180, 33, 55, 160, 90, 69 );//Moves to brown pile/bowl
-        Braccio.ServoMovement(20,                180, 33, 55, 160, 90, 10 );//Drops M&M into pile/bowl
+        Braccio.ServoMovement(20,                180, 33, 55, 160, 90, 30 );//Drops M&M into pile/bowl
         Braccio.ServoMovement(20,                0, 75, 15, 180, 90, 73 );
         break;
       default:
